@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lkl.android.lint.checks
+package com.lkl.android.lint.checks.detector
 
 import com.android.tools.lint.checks.infrastructure.TestFiles.java
 import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
+import com.lkl.android.lint.checks.detector.SampleCodeDetector
 import org.junit.Test
 
 @Suppress("UnstableApiUsage")
