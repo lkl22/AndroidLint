@@ -1,4 +1,4 @@
-package com.lkl.android.lint;
+package com.lkl.android.lint.plugin;
 
 
 import org.w3c.dom.Document;

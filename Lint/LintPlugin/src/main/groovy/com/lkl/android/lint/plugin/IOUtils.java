@@ -1,4 +1,4 @@
-package com.lkl.android.lint;
+package com.lkl.android.lint.plugin;
 
 import java.io.IOException;
 import java.io.InputStream;

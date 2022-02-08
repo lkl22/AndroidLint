@@ -1,4 +1,7 @@
-apply plugin: 'groovy'
+plugins {
+    // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
+    id 'java-gradle-plugin'
+}
 
 Properties props = new Properties()
 props.load(project.file('../gradle.properties').newDataInputStream())
@@ -19,10 +22,10 @@ repositories {
 }
 
 dependencies {
-    //gradle sdk
-    implementation gradleApi()
-    //groovy sdk
-    implementation localGroovy()
+//    //gradle sdk
+//    implementation gradleApi()
+//    //groovy sdk
+//    implementation localGroovy()
 
     testImplementation 'junit:junit:4.13.2'
 
@@ -31,11 +34,21 @@ dependencies {
     compileOnly 'com.google.android:android:4.1.1.4'
 }
 
+gradlePlugin {
+    // Define the plugin
+    plugins {
+        greeting {
+            id = 'com.lkl.lint.MyLintPlugin'
+            implementationClass = 'com.lkl.android.lint.plugin.MyLintPlugin'
+        }
+    }
+}
+
 sourceSets {
     main {
         java.srcDirs += "src/main/kotlin"
         if (isDebugLintPlugin) {
-            java.srcDirs += "${project.rootDir.parent}/Lint/LintPlugin/src/main/java"
+            groovy.srcDirs += "${project.rootDir.parent}/Lint/LintPlugin/src/main/groovy"
             resources.srcDirs += "${project.rootDir.parent}/Lint/LintPlugin/src/main/resources"
             println "add lintPlugin src"
         }

@@ -1,10 +1,10 @@
-package com.lkl.android.lint
+package com.lkl.android.lint.plugin
 
 import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.dsl.LintOptions
-import com.android.build.gradle.tasks.Lint
+import com.android.build.gradle.tasks.LintBaseTask
 import org.gradle.api.*
 import org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency
 import org.gradle.api.tasks.TaskState
@@ -57,7 +57,7 @@ class MyLintPlugin implements Plugin<Project> {
 
         variants.all { variant ->
             def variantName = variant.name.capitalize()
-            Lint lintTask = project.tasks.getByName("lint" + variantName) as Lint
+            LintBaseTask lintTask = project.tasks.getByName("lint" + variantName) as LintBaseTask
 
             //Lint 会把project下的lint.xml和lintConfig指定的lint.xml进行合并，为了确保只执行插件中的规则，采取此策略
             File lintFile = project.file("lint.xml")
@@ -86,7 +86,6 @@ class MyLintPlugin implements Plugin<Project> {
             lintTask.lintOptions = newOptions
 
             lintTask.doFirst {
-
                 if (lintFile.exists()) {
                     lintOldFile = project.file("lintOld.xml")
                     lintFile.renameTo(lintOldFile)
@@ -99,7 +98,6 @@ class MyLintPlugin implements Plugin<Project> {
                     }
                     throw new GradleException("lint.xml不存在")
                 }
-
             }
 
             project.gradle.taskGraph.afterTask { task, TaskState state ->

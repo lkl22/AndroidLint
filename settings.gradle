@@ -1,17 +1,17 @@
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        mavenLocal()
-        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://dl.google.com/dl/android/maven2/' }
-        google()
-        mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
-    }
-}
+//dependencyResolutionManagement {
+//    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+//    repositories {
+//        mavenLocal()
+//        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+//        maven { url 'https://jitpack.io' }
+//        maven { url 'https://dl.google.com/dl/android/maven2/' }
+//        google()
+//        mavenCentral()
+//        jcenter() // Warning: this repository is going to shut down soon
+//    }
+//}
 rootProject.name = "AndroidLint"
 include ':app'
 include ':Lint:LintChecks'
 include ':Lint:LintLibrary'
-//include ':Lint:LintPlugin'
+include ':Lint:LintPlugin'
