@@ -33,8 +33,21 @@ class LogDetector : Detector(), SourceCodeScanner {
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
         if (context.evaluator.isMemberInClass(method, "android.util.Log")) {
-            context.report(ISSUE, node, context.getLocation(node), "避免调用android.util.Log")
+            context.report(ISSUE, node, context.getLocation(node), "Do not directly invoke android.util.Log methods.", getLintFix())
         }
+    }
+
+    /**
+     * lint自动修复
+     */
+    private fun getLintFix(): LintFix {
+        return fix().replace()
+            .name("Replace Log() with LogUtils()")
+            .text("Log.")
+            .with("com.lkl.androidlint.utils.LogUtils.")
+            .shortenNames()
+            .autoFix()
+            .build()
     }
 
     companion object {
@@ -48,10 +61,10 @@ class LogDetector : Detector(), SourceCodeScanner {
             id = "LogUsage",
             // Title -- shown in the IDE's preference dialog, as category headers in the
             // Analysis results window, etc
-            briefDescription = "避免调用android.util.Log",
+            briefDescription = "Do not directly invoke android.util.Log methods.",
             // Full explanation of the issue; you can use some markdown markup such as
             // `monospace`, *italic*, and **bold**.
-            explanation = "请勿直接调用android.util.Log，应该使用统一工具类", // no need to .trimIndent(), lint does that automatically
+            explanation = "Do not directly invoke android.util.Log methods, should use the unified tool class", // no need to .trimIndent(), lint does that automatically
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,
