@@ -1,0 +1,9 @@
+plugins {
+    id 'com.android.library'
+}
+apply from: '../../GradleConfig/common-build.gradle'
+apply from: '../../GradleConfig/common-dependencies.gradle'
+
+dependencies {
+    api project(':Libs:CommonLib')
+}
