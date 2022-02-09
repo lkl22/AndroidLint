@@ -25,7 +25,7 @@ import com.lkl.android.lint.checks.detector.SampleCodeDetector
  */
 @Suppress("UnstableApiUsage")
 class MyIssueRegistry : IssueRegistry() {
-    override val issues = listOf(SampleCodeDetector.ISSUE, LogDetector.ISSUE)
+    override val issues = listOf(LogDetector.ISSUE)
 
     override val api: Int
         get() = CURRENT_API

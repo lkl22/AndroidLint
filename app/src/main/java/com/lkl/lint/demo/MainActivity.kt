@@ -14,5 +14,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(layout.activity_main)
 
         Log.d(TAG, "test")
+        android.util.Log.d(TAG, "test")
+        println(android.util.Log.d(TAG, "test"))
     }
 }

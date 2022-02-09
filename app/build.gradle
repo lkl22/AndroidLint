@@ -24,5 +24,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
+    implementation project(':Libs:CommonLib')
     implementation project(':Lint:LintLibrary')
 }
