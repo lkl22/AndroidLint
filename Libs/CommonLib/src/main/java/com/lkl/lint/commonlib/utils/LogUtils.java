@@ -1,4 +1,4 @@
-package com.lkl.androidlint.utils;
+package com.lkl.lint.commonlib.utils;
 
 import android.annotation.SuppressLint;
 import android.util.Log;

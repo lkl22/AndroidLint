@@ -1,8 +1,9 @@
-package com.lkl.androidlint
+package com.lkl.lint.demo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.lkl.lint.demo.R.*
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -10,7 +11,7 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(layout.activity_main)
 
         Log.d(TAG, "test")
     }

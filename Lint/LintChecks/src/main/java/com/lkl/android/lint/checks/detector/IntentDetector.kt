@@ -25,14 +25,14 @@ import org.jetbrains.uast.UCallExpression
  * flags all string literals in the code that contain the word "lint".
  */
 @Suppress("UnstableApiUsage")
-class LogDetector : Detector(), SourceCodeScanner {
+class IntentDetector : Detector(), SourceCodeScanner {
 
     override fun getApplicableMethodNames(): List<String> {
         return listOf("v", "d", "i", "w", "e", "wtf")
     }
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
-        if (context.evaluator.isMemberInClass(method, com.android.tools.lint.checks.LogDetector.LOG_CLS)) {
+        if (context.evaluator.isMemberInClass(method, "android.util.Log")) {
             context.report(ISSUE, node, context.getLocation(node), "Do not directly invoke android.util.Log methods.", getLintFix())
         }
     }
@@ -69,7 +69,7 @@ class LogDetector : Detector(), SourceCodeScanner {
             priority = 6,
             severity = Severity.ERROR,
             implementation = Implementation(
-                LogDetector::class.java,
+                IntentDetector::class.java,
                 Scope.JAVA_FILE_SCOPE
             )
         )
