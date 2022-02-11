@@ -37,7 +37,7 @@ dependencies {
 gradlePlugin {
     // Define the plugin
     plugins {
-        greeting {
+        MyLintPlugin {
             id = 'com.lkl.lint.MyLintPlugin'
             implementationClass = 'com.lkl.android.lint.plugin.MyLintPlugin'
         }

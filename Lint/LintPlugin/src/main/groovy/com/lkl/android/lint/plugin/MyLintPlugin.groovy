@@ -37,17 +37,13 @@ class MyLintPlugin implements Plugin<Project> {
 
     private void applyTask(Project project, DomainObjectCollection<BaseVariant> variants) {
         project.dependencies {
-
-            if(project.getPlugins().hasPlugin('com.android.application')){
-                compile('com.lkl.android.lint:lint:latest.release') {
-                    force = true;
-                }
+            if (getBooleanProperty(project, "DEBUG_LINT_PLUGIN")) {
+                implementation(project.project(':Lint:LintLibrary'))
             } else {
-                provided('com.lkl.android.lint:lint:latest.release') {
-                    force = true;
+                compile('com.lkl.android.lint:lint:latest.release') {
+                    force = true
                 }
             }
-
         }
         project.configurations.all {
             resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
@@ -74,16 +70,16 @@ class MyLintPlugin implements Plugin<Project> {
             }
             */
 
-            def newOptions = new LintOptions()
-            newOptions.lintConfig = lintFile
-            newOptions.warningsAsErrors = true
-            newOptions.abortOnError = true
-            newOptions.htmlReport = true
-            //不放在build下，防止被clean掉
-            newOptions.htmlOutput = project.file("${project.projectDir}/lint-report/lint-report.html")
-            newOptions.xmlReport = false
+//            def newOptions = new LintOptions()
+//            newOptions.lintConfig = lintFile
+//            newOptions.warningsAsErrors = true
+//            newOptions.abortOnError = true
+//            newOptions.htmlReport = true
+//            //不放在build下，防止被clean掉
+//            newOptions.htmlOutput = project.file("${project.projectDir}/lint-report/lint-report.html")
+//            newOptions.xmlReport = false
 
-            lintTask.lintOptions = newOptions
+//            lintTask.lintOptions = newOptions
 
             lintTask.doFirst {
                 if (lintFile.exists()) {
@@ -170,4 +166,7 @@ class MyLintPlugin implements Plugin<Project> {
         }
     }
 
+    private boolean getBooleanProperty(Project project, String propertyKey) {
+        return project.hasProperty(propertyKey) && Boolean.valueOf(project.property(propertyKey))
+    }
 }

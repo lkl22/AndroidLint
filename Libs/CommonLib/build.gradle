@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
 }
+apply plugin: 'com.lkl.lint.MyLintPlugin'
 apply from: '../../GradleConfig/common-build.gradle'
 apply from: '../../GradleConfig/common-dependencies.gradle'
 

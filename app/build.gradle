@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.lkl.lint.MyLintPlugin'
 apply from: '../GradleConfig/common-build.gradle'
 apply from: '../GradleConfig/common-dependencies.gradle'
 
@@ -26,5 +27,4 @@ dependencies {
 
     implementation project(':Libs:CommonLib')
     implementation project(':Libs:Lib1')
-    implementation project(':Lint:LintLibrary')
 }
