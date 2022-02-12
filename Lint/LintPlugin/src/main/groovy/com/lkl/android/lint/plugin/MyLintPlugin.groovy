@@ -40,7 +40,7 @@ class MyLintPlugin implements Plugin<Project> {
             if (getBooleanProperty(project, "DEBUG_LINT_PLUGIN")) {
                 implementation(project.project(':Lint:LintLibrary'))
             } else {
-                compile('com.lkl.android.lint:lint:latest.release') {
+                compile('io.github.lkl22:lintLib:latest.release') {
                     force = true
                 }
             }

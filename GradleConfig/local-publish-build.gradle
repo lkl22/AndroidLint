@@ -1,0 +1,71 @@
+apply plugin: 'maven-publish'
+
+def addDependency(Node dependenciesNode, Configuration configuration) {
+    configuration.allDependencies.withType(ModuleDependency) { ModuleDependency dependency ->
+        println "addDependencies ${dependency.group}:${dependency.name}:${dependency.version}"
+        if (dependency.version != "unspecified") {
+            // 排除以project形式引入的依赖项
+            Node dependencyNode = dependenciesNode.appendNode("dependency")
+            dependencyNode.appendNode("groupId", dependency.group)
+            dependencyNode.appendNode("artifactId", dependency.name)
+            dependencyNode.appendNode("version", dependency.version)
+            dependencyNode.appendNode("scope", "compile")
+
+            if (dependency.excludeRules.size() > 0) {
+                Node exclusionsNode = dependencyNode.appendNode("exclusions")
+                dependency.excludeRules.each { ExcludeRule excludeRule ->
+                    Node exclusionNode = exclusionsNode.appendNode("exclusion")
+                    exclusionNode.appendNode("groupId", excludeRule.group)
+                    exclusionNode.appendNode("artifactId", excludeRule.module)
+                }
+            }
+        }
+    }
+}
+
+def addDependencies(MavenPublication publication) {
+    publication.pom.withXml {
+        Node dependenciesNode = asNode().appendNode("dependencies")
+        def configurationArray = ["implementation", "api", "compile"]
+        configurationArray.forEach { configurationName ->
+            Configuration configuration = null
+            try {
+                configuration = configurations.getByName(configurationName)
+            } catch (Exception ex) {
+            }
+
+            if (configuration != null) {
+                addDependency(dependenciesNode, configuration)
+            }
+        }
+    }
+}
+
+def addMavenPublication = { MavenPublication publication ->
+    //全球唯一标识符
+    publication.groupId = POM_GROUP_ID
+    //构件标识符
+    publication.artifactId = POM_ARTIFACT_ID
+    //构件版本
+    publication.version = POM_VERSION_NAME
+
+    if (Boolean.valueOf(IS_PLUGIN)) {
+        publication.artifact "$buildDir/libs/${project.name}.jar"
+    } else {
+        publication.artifact "$buildDir/outputs/aar/${project.name}-release.aar"
+    }
+
+    addDependencies(publication)
+}
+
+publishing {
+    publications {
+        addMavenPublication(product(MavenPublication))
+    }
+    repositories {
+        maven {
+            // change URLs to point to your repos, e.g. http://my.org/repo
+            url = "${rootProject.rootDir}/.repo"
+        }
+    }
+}

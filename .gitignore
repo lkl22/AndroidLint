@@ -37,3 +37,4 @@ lint/tmp/
 # lint/reports/
 
 /build
+.repo

@@ -14,3 +14,5 @@ Android开发自定义代码检查规则
 [Android Lint：自定义Lint调试与开发](https://www.paincker.com/android-lint-2-implements/)
 
 [https://github.com/JetBrains/android/tree/master/android/src/org/jetbrains/android/inspections](https://github.com/JetBrains/android/tree/master/android/src/org/jetbrains/android/inspections)
+
+[Android Studio上传Library库到JCenter，并同步到Maven Central](https://blog.csdn.net/venshine/article/details/51742926)
