@@ -16,3 +16,5 @@ Android开发自定义代码检查规则
 [https://github.com/JetBrains/android/tree/master/android/src/org/jetbrains/android/inspections](https://github.com/JetBrains/android/tree/master/android/src/org/jetbrains/android/inspections)
 
 [Android Studio上传Library库到JCenter，并同步到Maven Central](https://blog.csdn.net/venshine/article/details/51742926)
+
+[JCenter 已经提桶跑路，是时候学会上传到 Maven Central 了](https://gitchat.csdn.net/activity/60694fb016547b27e2743254)
