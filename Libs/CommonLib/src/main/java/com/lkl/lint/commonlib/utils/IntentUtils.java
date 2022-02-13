@@ -21,4 +21,13 @@ public class IntentUtils {
             return defaultValue;
         }
     }
+
+    @SuppressLint("IntentUsage")
+    public static int getIntExtra(Intent intent, String name, int defaultValue) {
+        try {
+            return intent.getIntExtra(name, defaultValue);
+        } catch (Exception ex) {
+            return defaultValue;
+        }
+    }
 }

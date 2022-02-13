@@ -15,7 +15,10 @@
       {
         "fixDisplayName": "Replace Intent() with IntentUtils()",
         "fixClassName": "com.lkl.lint.commonlib.utils.IntentUtils",
-        "fixIsStaticMethod": "true"
+        "fixIsStaticMethod": "true",
+        "fixMethodMap": {
+          "getBooleanExtra": "safeGetBooleanExtra"
+        }
       }
     ]
   }

@@ -16,4 +16,13 @@ public class SafeIntent extends Intent {
             return defaultValue;
         }
     }
+
+    @SuppressLint("IntentUsage")
+    public int getIntExtra(String name, int defaultValue) {
+        try {
+            return super.getIntExtra(name, defaultValue);
+        } catch (Exception ex) {
+            return defaultValue;
+        }
+    }
 }

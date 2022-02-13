@@ -31,5 +31,7 @@ public class MainActivity2 extends AppCompatActivity {
                 .getBooleanExtra
                         ("dd",
                                 true);
+
+        getIntent().getIntExtra("dd", 2);
     }
 }

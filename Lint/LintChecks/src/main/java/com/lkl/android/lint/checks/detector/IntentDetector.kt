@@ -133,12 +133,14 @@ class IntentDetector : BaseConfigDetector(), SourceCodeScanner {
                 val isStaticMethod =
                     GsonUtils.getString(it, KEY_FIX_IS_STATIC_METHOD).toBoolean()
                 val compositeBuilder = fix().name(fixDisplayName).composite()
+                val methodMap = GsonUtils.getJsonObject(it, KEY_FIX_METHOD_MAP)
 
                 // 替换方法名必须在替换Receiver之前
                 compositeBuilder.add(
                     createReplaceMethodFix(
                         method.name,
                         isStaticMethod,
+                        methodMap,
                         receiverTxt
                     )
                 )
@@ -162,16 +164,20 @@ class IntentDetector : BaseConfigDetector(), SourceCodeScanner {
     private fun createReplaceMethodFix(
         methodName: String,
         isStaticMethod: Boolean,
+        methodMap: JsonObject?,
         receiverTxt: String
     ): LintFix {
         val fixBuilder = fix().replace()
             .pattern("(${methodName}\\s*\\()")
             .shortenNames()
             .autoFix()
+        val newMethodName = methodMap?.let {
+            GsonUtils.getString(it, methodName)
+        } ?: methodName
         if (isStaticMethod) {
-            fixBuilder.with("${methodName}(${receiverTxt}, ")
+            fixBuilder.with("${newMethodName}(${receiverTxt}, ")
         } else {
-            fixBuilder.with("${methodName}(")
+            fixBuilder.with("${newMethodName}(")
         }
         return fixBuilder.build()
     }

@@ -31,5 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         println(intent
             .getBooleanExtra ("dd", true))
+
+        intent.getIntExtra ("dd", 1)
     }
 }
