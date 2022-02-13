@@ -1,5 +1,6 @@
 package com.lkl.android.lint.checks.utils
 
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import java.io.File
@@ -35,6 +36,14 @@ object GsonUtils {
     fun getString(jsonObject: JsonObject, key: String): String? {
         return try {
             jsonObject.get(key).asString
+        } catch (ex: Exception) {
+            null
+        }
+    }
+
+    fun getJsonArray(jsonObject: JsonObject, key: String): JsonArray? {
+        return try {
+            jsonObject.get(key).asJsonArray
         } catch (ex: Exception) {
             null
         }

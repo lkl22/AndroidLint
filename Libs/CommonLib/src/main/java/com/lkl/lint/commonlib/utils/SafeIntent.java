@@ -1,5 +1,6 @@
 package com.lkl.lint.commonlib.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 
 public class SafeIntent extends Intent {
@@ -7,6 +8,7 @@ public class SafeIntent extends Intent {
         super(o);
     }
 
+    @SuppressLint("IntentUsage")
     public boolean getBooleanExtra(String name, boolean defaultValue) {
         try {
             return super.getBooleanExtra(name, defaultValue);

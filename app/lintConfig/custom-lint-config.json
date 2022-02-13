@@ -1,5 +1,2 @@
 {
-  "log-usage": {
-    "reportMessage": "Do not directly invoke android.util.Log methods.Please use com.lkl.lint.commonlib.utils.LogUtils replace."
-  }
 }

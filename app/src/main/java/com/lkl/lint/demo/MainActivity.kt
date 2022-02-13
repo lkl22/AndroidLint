@@ -17,6 +17,19 @@ class MainActivity : AppCompatActivity() {
         android.util.Log.d(TAG, "test")
         println(android.util.Log.d(TAG, "test"))
 
-        intent.getBooleanExtra("dd", true)
+        val intentVal = intent
+        intentVal.getBooleanExtra ( "dd", true)
+        intentVal
+            .getBooleanExtra ( "dd", true)
+        getIntent().getBooleanExtra("dd", true)
+        getIntent()
+            .getBooleanExtra("dd", true)
+        intent.getBooleanExtra ("dd", true)
+
+        intent
+            .getBooleanExtra ("dd", true)
+
+        println(intent
+            .getBooleanExtra ("dd", true))
     }
 }

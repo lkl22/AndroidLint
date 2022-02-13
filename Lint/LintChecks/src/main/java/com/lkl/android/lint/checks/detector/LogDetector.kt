@@ -70,9 +70,9 @@ class LogDetector : BaseConfigDetector(), SourceCodeScanner {
                 return
             }
             val reportMessage =
-                getConfig(KEY_REPORT_MESSAGE) ?: "Do not directly invoke android.util.Log methods."
-            val fixDisplayName = getConfig(KEY_FIX_DISPLAY_NAME)
-            val fixClassName = getConfig(KEY_FIX_CLASS_NAME)
+                getStringConfig(KEY_REPORT_MESSAGE) ?: "Do not directly invoke android.util.Log methods."
+            val fixDisplayName = getStringConfig(KEY_FIX_DISPLAY_NAME)
+            val fixClassName = getStringConfig(KEY_FIX_CLASS_NAME)
             val location = context.getCallLocation(node, true, false)
             val fix = if (fixClassName.isNullOrBlank()) null else
                 fix().replace()

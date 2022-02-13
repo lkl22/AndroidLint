@@ -3,5 +3,20 @@
     "fixDisplayName": "Replace Log() with LogUtils()",
     "fixClassName": "com.lkl.lint.commonlib.utils.LogUtils",
     "reportMessage": "Do not directly invoke android.util.Log methods.Please use com.lkl.lint.commonlib.utils.LogUtils replace."
+  },
+  "intent-usage": {
+    "fixDisplayName": "Replace Intent",
+    "reportMessage": "Do not directly invoke android.content.Intent getXXXExtra methods.",
+    "fixes": [
+      {
+        "fixDisplayName": "Replace Intent() with SafeIntent()",
+        "fixClassName": "com.lkl.lint.commonlib.utils.SafeIntent"
+      },
+      {
+        "fixDisplayName": "Replace Intent() with IntentUtils()",
+        "fixClassName": "com.lkl.lint.commonlib.utils.IntentUtils",
+        "fixIsStaticMethod": "true"
+      }
+    ]
   }
 }

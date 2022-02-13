@@ -16,8 +16,12 @@
 package com.lkl.android.lint.checks.detector
 
 import com.android.tools.lint.detector.api.*
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.intellij.psi.PsiMethod
+import com.lkl.android.lint.checks.utils.DetectorUtils
+import com.lkl.android.lint.checks.utils.GsonUtils
+import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.uast.UCallExpression
 
 
@@ -101,25 +105,93 @@ class IntentDetector : BaseConfigDetector(), SourceCodeScanner {
                 return
             }
             val reportMessage =
-                getConfig(KEY_REPORT_MESSAGE) ?: "Do not directly invoke android.util.Log methods."
-            val fixDisplayName = getConfig(KEY_FIX_DISPLAY_NAME)
-            val fixClassName = getConfig(KEY_FIX_CLASS_NAME)
-            val location = context.getCallLocation(node, true, false)
-            val fix = fix().replace()
-                .name(fixDisplayName)
-                .range(location)
-                .with("${fixClassName}.${method.name}")
-                .shortenNames()
-                .autoFix()
-                .build()
+                getStringConfig(KEY_REPORT_MESSAGE)
+                    ?: "Do not directly invoke $INTENT_CLS getXXXExtra methods."
 
             context.report(
                 ISSUE,
                 node,
                 context.getLocation(node),
-                "Do not directly invoke android.util.Log methods.",
-                fix
+                reportMessage,
+                getFix(context, node, method)
             )
         }
+    }
+
+    private fun getFix(context: JavaContext, node: UCallExpression, method: PsiMethod): LintFix {
+        // isKotlin(method)不准
+        val isKotlinCode = context.psiFile is KtFile
+        val receiverTxt = DetectorUtils.getReceiverTxt(node.receiver)
+
+        val groupFixDisplayName = getStringConfig(KEY_FIX_DISPLAY_NAME)
+        val builder = fix().name(groupFixDisplayName).alternatives()
+        val fixes: JsonArray? = getJsonArrayConfig(KEY_FIXES)
+        fixes?.forEach {
+            if (it is JsonObject) {
+                val fixDisplayName = GsonUtils.getString(it, KEY_FIX_DISPLAY_NAME)
+                val fixClassName = GsonUtils.getString(it, KEY_FIX_CLASS_NAME)
+                val isStaticMethod =
+                    GsonUtils.getString(it, KEY_FIX_IS_STATIC_METHOD).toBoolean()
+                val compositeBuilder = fix().name(fixDisplayName).composite()
+
+                // 替换方法名必须在替换Receiver之前
+                compositeBuilder.add(
+                    createReplaceMethodFix(
+                        method.name,
+                        isStaticMethod,
+                        receiverTxt
+                    )
+                )
+                fixClassName?.apply {
+                    compositeBuilder.add(
+                        createReplaceReceiverFix(
+                            this,
+                            isKotlinCode,
+                            isStaticMethod,
+                            receiverTxt
+                        )
+                    )
+                }
+
+                builder.add(compositeBuilder.build())
+            }
+        }
+        return builder.build()
+    }
+
+    private fun createReplaceMethodFix(
+        methodName: String,
+        isStaticMethod: Boolean,
+        receiverTxt: String
+    ): LintFix {
+        val fixBuilder = fix().replace()
+            .pattern("(${methodName}\\s*\\()")
+            .shortenNames()
+            .autoFix()
+        if (isStaticMethod) {
+            fixBuilder.with("${methodName}(${receiverTxt}, ")
+        } else {
+            fixBuilder.with("${methodName}(")
+        }
+        return fixBuilder.build()
+    }
+
+
+    private fun createReplaceReceiverFix(
+        fixClassName: String,
+        isKotlinCode: Boolean,
+        isStaticMethod: Boolean,
+        receiverTxt: String
+    ): LintFix {
+        val fixBuilder = fix().replace()
+            .text(receiverTxt)
+            .shortenNames()
+            .autoFix()
+        if (isStaticMethod) {
+            fixBuilder.with(fixClassName)
+        } else {
+            fixBuilder.with("${if (isKotlinCode) "" else "new "}${fixClassName}($receiverTxt)")
+        }
+        return fixBuilder.build()
     }
 }

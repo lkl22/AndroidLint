@@ -2,6 +2,7 @@ package com.lkl.android.lint.checks.detector
 
 import com.android.tools.lint.detector.api.Context
 import com.android.tools.lint.detector.api.Detector
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.lkl.android.lint.checks.config.LintConfig
 import com.lkl.android.lint.checks.utils.GsonUtils
@@ -18,6 +19,9 @@ abstract class BaseConfigDetector : Detector() {
         const val KEY_REPORT_MESSAGE = "reportMessage"
         const val KEY_FIX_DISPLAY_NAME = "fixDisplayName"
         const val KEY_FIX_CLASS_NAME = "fixClassName"
+        const val KEY_FIXES = "fixes"
+        const val KEY_FIX_IS_STATIC_METHOD = "fixIsStaticMethod"
+        const val KEY_FIX_METHOD_MAP = "fixMethodMap"
     }
     private var lintConfig: LintConfig? = null
     protected var customConfig: JsonObject? = null
@@ -35,9 +39,15 @@ abstract class BaseConfigDetector : Detector() {
         return lintConfig?.findConfig(key = key)
     }
 
-    fun getConfig(key: String): String? {
+    fun getStringConfig(key: String): String? {
         return customConfig?.let {
             GsonUtils.getString(it, key)
+        }
+    }
+
+    fun getJsonArrayConfig(key: String): JsonArray? {
+        return customConfig?.let {
+            GsonUtils.getJsonArray(it, key)
         }
     }
 }
