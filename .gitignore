@@ -38,3 +38,4 @@ lint/tmp/
 
 /build
 .repo
+local.properties
