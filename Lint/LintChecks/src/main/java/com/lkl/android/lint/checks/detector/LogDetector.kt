@@ -74,13 +74,14 @@ class LogDetector : BaseConfigDetector(), SourceCodeScanner {
             val fixDisplayName = getConfig(KEY_FIX_DISPLAY_NAME)
             val fixClassName = getConfig(KEY_FIX_CLASS_NAME)
             val location = context.getCallLocation(node, true, false)
-            val fix = fix().replace()
-                .name(fixDisplayName)
-                .range(location)
-                .with("${fixClassName}.${method.name}")
-                .shortenNames()
-                .autoFix()
-                .build()
+            val fix = if (fixClassName.isNullOrBlank()) null else
+                fix().replace()
+                    .name(fixDisplayName)
+                    .range(location)
+                    .with("${fixClassName}.${method.name}")
+                    .shortenNames()
+                    .autoFix()
+                    .build()
             context.report(
                 ISSUE,
                 node,
