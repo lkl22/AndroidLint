@@ -45,10 +45,10 @@ class IntentDetector : BaseConfigDetector(), SourceCodeScanner {
             id = "IntentUsage",
             // Title -- shown in the IDE's preference dialog, as category headers in the
             // Analysis results window, etc
-            briefDescription = "Do not directly invoke $INTENT_CLS getXXXExtra methods.",
+            briefDescription = "Do not directly invoke $INTENT_CLS some methods.",
             // Full explanation of the issue; you can use some markdown markup such as
             // `monospace`, *italic*, and **bold**.
-            explanation = "Do not directly invoke $INTENT_CLS getXXXExtra methods, should use the unified tool class", // no need to .trimIndent(), lint does that automatically
+            explanation = "Do not directly invoke $INTENT_CLS some methods, should use the unified tool class", // no need to .trimIndent(), lint does that automatically
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,
@@ -64,39 +64,7 @@ class IntentDetector : BaseConfigDetector(), SourceCodeScanner {
     }
 
     override fun getApplicableMethodNames(): List<String> {
-        return listOf(
-            "getExtra",
-            "getBooleanExtra",
-            "getByteExtra",
-            "getShortExtra",
-            "getCharExtra",
-            "getIntExtra",
-            "getLongExtra",
-            "getFloatExtra",
-            "getDoubleExtra",
-            "getStringExtra",
-            "getCharSequenceExtra",
-            "getParcelableExtra",
-            "getParcelableArrayExtra",
-            "getParcelableArrayListExtra",
-            "getSerializableExtra",
-            "getIntegerArrayListExtra",
-            "getStringArrayListExtra",
-            "getCharSequenceArrayListExtra",
-            "getBooleanArrayExtra",
-            "getByteArrayExtra",
-            "getShortArrayExtra",
-            "getCharArrayExtra",
-            "getIntArrayExtra",
-            "getLongArrayExtra",
-            "getFloatArrayExtra",
-            "getDoubleArrayExtra",
-            "getStringArrayExtra",
-            "getCharSequenceArrayExtra",
-            "getBundleExtra",
-            "getIBinderExtra",
-            "getExtras"
-        )
+        return getDetectMethodNames()
     }
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
@@ -106,7 +74,7 @@ class IntentDetector : BaseConfigDetector(), SourceCodeScanner {
             }
             val reportMessage =
                 getStringConfig(KEY_REPORT_MESSAGE)
-                    ?: "Do not directly invoke $INTENT_CLS getXXXExtra methods."
+                    ?: "Do not directly invoke $INTENT_CLS some methods."
 
             context.report(
                 ISSUE,
