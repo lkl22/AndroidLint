@@ -54,5 +54,22 @@
         }
       }
     ]
+  },
+  "ExportedAttribute": {
+    "ignores": {
+      "activities": [
+        {
+          "className": "com.lkl.lint.demo.MainActivity",
+          "reason": "can set to true"
+        },
+        {
+          "className": "com.lkl.lint.demo.MainActivity2",
+          "reason": "can set to true"
+        }
+      ],
+      "services": [],
+      "receivers": [],
+      "providers": []
+    }
   }
 }

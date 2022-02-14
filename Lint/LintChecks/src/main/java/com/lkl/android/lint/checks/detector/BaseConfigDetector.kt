@@ -18,6 +18,7 @@ abstract class BaseConfigDetector : Detector() {
     companion object {
         const val KEY_REPORT_MESSAGE = "reportMessage"
         const val KEY_DETECT_METHOD_NAMES = "detectMethodNames"
+        const val KEY_IGNORES = "ignores"
         const val KEY_FIX_DISPLAY_NAME = "fixDisplayName"
         const val KEY_FIX_CLASS_NAME = "fixClassName"
         const val KEY_FIXES = "fixes"
@@ -44,6 +45,12 @@ abstract class BaseConfigDetector : Detector() {
     fun getStringConfig(key: String): String? {
         return customConfig?.let {
             GsonUtils.getString(it, key)
+        }
+    }
+
+    fun getJsonStringConfig(key: String): String? {
+        return customConfig?.let {
+            GsonUtils.getJsonString(it, key)
         }
     }
 

@@ -10,8 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidLint">
         <activity
-            android:name=".MainActivity2"
-            android:exported="true" />
+            android:name="com.lkl.lint.demo.MainActivity2"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

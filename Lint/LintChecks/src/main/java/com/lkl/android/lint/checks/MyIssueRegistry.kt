@@ -17,6 +17,7 @@ package com.lkl.android.lint.checks
 
 import com.android.tools.lint.client.api.IssueRegistry
 import com.android.tools.lint.detector.api.CURRENT_API
+import com.lkl.android.lint.checks.detector.ExportedAttrDetector
 import com.lkl.android.lint.checks.detector.IntentDetector
 import com.lkl.android.lint.checks.detector.LogDetector
 
@@ -25,7 +26,8 @@ import com.lkl.android.lint.checks.detector.LogDetector
  */
 @Suppress("UnstableApiUsage")
 class MyIssueRegistry : IssueRegistry() {
-    override val issues = listOf(LogDetector.ISSUE, IntentDetector.ISSUE)
+    override val issues =
+        listOf(LogDetector.ISSUE, IntentDetector.ISSUE, ExportedAttrDetector.ISSUE)
 
     override val api: Int
         get() = CURRENT_API
