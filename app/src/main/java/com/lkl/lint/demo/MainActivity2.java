@@ -33,5 +33,15 @@ public class MainActivity2 extends AppCompatActivity {
                                 true);
 
         getIntent().getIntExtra("dd", 2);
+
+        String num = "dd";
+        Long.valueOf("123");
+        Long.parseLong("123");
+        Long.valueOf("123q");
+        Long.parseLong("123q");
+        Long.valueOf(num);
+        Long.parseLong(num);
+        Long.valueOf("123" + "46");
+        Long.parseLong("123" + "78");
     }
 }

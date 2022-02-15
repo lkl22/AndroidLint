@@ -17,10 +17,7 @@ package com.lkl.android.lint.checks
 
 import com.android.tools.lint.client.api.IssueRegistry
 import com.android.tools.lint.detector.api.CURRENT_API
-import com.lkl.android.lint.checks.detector.ExportedAttrDetector
-import com.lkl.android.lint.checks.detector.IntentDetector
-import com.lkl.android.lint.checks.detector.LogDetector
-import com.lkl.android.lint.checks.detector.UsesPermissionDetector
+import com.lkl.android.lint.checks.detector.*
 
 /*
  * The list of issues that will be checked when running <code>lint</code>.
@@ -32,7 +29,8 @@ class MyIssueRegistry : IssueRegistry() {
             LogDetector.ISSUE,
             IntentDetector.ISSUE,
             ExportedAttrDetector.ISSUE,
-            UsesPermissionDetector.ISSUE
+            UsesPermissionDetector.ISSUE,
+            NumParseDetector.ISSUE
         )
 
     override val api: Int

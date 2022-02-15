@@ -33,5 +33,16 @@ class MainActivity : AppCompatActivity() {
             .getBooleanExtra ("dd", true))
 
         intent.getIntExtra ("dd", 1)
+
+        val num = "dd"
+        java.lang.Long.valueOf("123")
+        java.lang.Long.parseLong("123")
+        "123".toLong()
+        java.lang.Long.valueOf("123q")
+        "123q".toLong()
+        java.lang.Long.valueOf(num)
+        num.toLong()
+        java.lang.Long.valueOf("123" + "46")
+        java.lang.Long.parseLong("123" + "78")
     }
 }
