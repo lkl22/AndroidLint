@@ -55,6 +55,17 @@
       }
     ]
   },
+  "uses-permission-declaration": {
+    "permissionList": [
+      "android.permission.CAMERA"
+    ],
+    "ignores": [
+      {
+        "permissionName": "android.permission.CAMERA",
+        "reason": "拍照需要使用的权限声明"
+      }
+    ]
+  },
   "ExportedAttribute": {
     "ignores": {
       "activities": [

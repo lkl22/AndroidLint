@@ -8,3 +8,6 @@ data class ExportedIgnoreCfg(
     var receivers: List<ExportedIgnoreItem>?,
     var providers: List<ExportedIgnoreItem>?
 )
+
+data class PermissionIgnoreItem(var permissionName: String?, var reason: String?)
+

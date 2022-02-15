@@ -61,14 +61,9 @@ abstract class BaseConfigDetector : Detector() {
     }
 
     fun getDetectMethodNames(): List<String> {
-        val list = ArrayList<String>()
-        getJsonArrayConfig(KEY_DETECT_METHOD_NAMES)?.mapTo(list, {
-            try {
-                it.asString
-            } catch (ex: Exception) {
-                ""
-            }
-        })
-        return list.filter { it.isNotBlank() }
+        return GsonUtils.parseJson2List(
+            getJsonStringConfig(KEY_DETECT_METHOD_NAMES),
+            String::class.java
+        ) ?: ArrayList()
     }
 }
