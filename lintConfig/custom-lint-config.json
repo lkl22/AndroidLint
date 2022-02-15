@@ -67,9 +67,24 @@
           "reason": "can set to true"
         }
       ],
-      "services": [],
-      "receivers": [],
-      "providers": []
+      "services": [
+        {
+          "className": "com.lkl.lint.demo.service.MyService",
+          "reason": "can set to true"
+        }
+      ],
+      "receivers": [
+        {
+          "className": "com.lkl.lint.demo.receiver.MyReceiver",
+          "reason": "can set to true"
+        }
+      ],
+      "providers": [
+        {
+          "className": "com.lkl.lint.demo.provider.MyContentProvider",
+          "reason": "can set to true"
+        }
+      ]
     }
   }
 }
