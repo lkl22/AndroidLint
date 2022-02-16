@@ -11,4 +11,13 @@ public class NumParseUtils {
             return defaultValue;
         }
     }
+
+    @SuppressLint("NumParseUsage")
+    public static int safeParseInt(String data, int defaultValue) {
+        try {
+            return Integer.parseInt(data);
+        } catch (Exception ex) {
+            return defaultValue;
+        }
+    }
 }

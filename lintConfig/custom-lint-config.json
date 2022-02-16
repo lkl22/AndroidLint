@@ -42,15 +42,28 @@
     "fixDisplayName": "Replace Intent",
     "fixes": [
       {
-        "fixDisplayName": "Replace Intent with SafeIntent",
-        "fixClassName": "com.lkl.lint.commonlib.utils.SafeIntent"
+        "displayName": "Replace Intent with SafeIntent",
+        "className": "com.lkl.lint.commonlib.utils.SafeIntent"
       },
       {
-        "fixDisplayName": "Replace Intent with IntentUtils",
-        "fixClassName": "com.lkl.lint.commonlib.utils.IntentUtils",
-        "fixIsStaticMethod": "true",
-        "fixMethodMap": {
+        "displayName": "Replace Intent with IntentUtils",
+        "className": "com.lkl.lint.commonlib.utils.IntentUtils",
+        "isStaticMethod": "true",
+        "methodMap": {
           "getBooleanExtra": "safeGetBooleanExtra"
+        }
+      }
+    ]
+  },
+  "num-parse-usage": {
+    "reportMessage": "Num parse maybe throw NumberFormatException, should try catch.",
+    "fixes": [
+      {
+        "displayName": "Replace cur method with NumParseUtils's method.",
+        "className": "com.lkl.lint.commonlib.utils.NumParseUtils",
+        "isStaticMethod": "true",
+        "methodMap": {
+          "parseInt": "safeParseInt"
         }
       }
     ]

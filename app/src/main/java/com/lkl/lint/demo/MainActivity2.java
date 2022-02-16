@@ -43,5 +43,8 @@ public class MainActivity2 extends AppCompatActivity {
         Long.parseLong(num);
         Long.valueOf("123" + "46");
         Long.parseLong("123" + "78");
+
+        Integer.valueOf(num);
+        Integer.parseInt(num);
     }
 }

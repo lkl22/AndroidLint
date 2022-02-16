@@ -44,5 +44,8 @@ class MainActivity : AppCompatActivity() {
         num.toLong()
         java.lang.Long.valueOf("123" + "46")
         java.lang.Long.parseLong("123" + "78")
+
+        Integer.valueOf(num)
+        Integer.parseInt(num)
     }
 }

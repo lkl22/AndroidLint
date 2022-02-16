@@ -3,6 +3,8 @@ package com.lkl.android.lint.checks.detector
 import com.android.tools.lint.detector.api.*
 import com.google.gson.JsonObject
 import com.intellij.psi.PsiMethod
+import com.lkl.android.lint.checks.utils.DetectorUtils
+import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.uast.UCallExpression
 import org.jetbrains.uast.java.JavaULiteralExpression
 import org.jetbrains.uast.kotlin.KotlinStringULiteralExpression
@@ -23,16 +25,18 @@ class NumParseDetector : BaseConfigDetector(), SourceCodeScanner {
          */
         @JvmField
         val ISSUE: Issue = Issue.create( // ID: used in @SuppressLint warnings etc
-                id = "NumParseUsage", // Title -- shown in the IDE's preference dialog, as category headers in the
-                // Analysis results window, etc
-                briefDescription = "Num parse maybe throw NumberFormatException.", // Full explanation of the issue; you can use some markdown markup such as
-                // `monospace`, *italic*, and **bold**.
-                explanation = "Num parse maybe throw NumberFormatException, should try catch",
-                category = Category.SECURITY,
-                priority = 6,
-                severity = Severity.ERROR,
-                implementation = Implementation(NumParseDetector::class.java,
-                        Scope.JAVA_FILE_SCOPE))
+            id = "NumParseUsage", // Title -- shown in the IDE's preference dialog, as category headers in the
+            // Analysis results window, etc
+            briefDescription = "Num parse maybe throw NumberFormatException.", // Full explanation of the issue; you can use some markdown markup such as
+            // `monospace`, *italic*, and **bold**.
+            explanation = "Num parse maybe throw NumberFormatException, should try catch.",
+            category = Category.SECURITY,
+            priority = 6,
+            severity = Severity.ERROR,
+            implementation = Implementation(
+                NumParseDetector::class.java, Scope.JAVA_FILE_SCOPE
+            )
+        )
 
         const val CLS_NUMBER = "java.lang.Number"
         const val CLS_BYTE = "java.lang.Byte"
@@ -56,40 +60,77 @@ class NumParseDetector : BaseConfigDetector(), SourceCodeScanner {
     }
 
     override fun getApplicableMethodNames(): List<String> {
-        return listOf(METHOD_VALUE_OF,
-                METHOD_PARSE_BYTE,
-                METHOD_PARSE_SHORT,
-                METHOD_PARSE_INT,
-                METHOD_PARSE_LONG,
-                METHOD_PARSE_FLOAT,
-                METHOD_PARSE_DOUBLE)
+        return listOf(
+            METHOD_VALUE_OF,
+            METHOD_PARSE_BYTE,
+            METHOD_PARSE_SHORT,
+            METHOD_PARSE_INT,
+            METHOD_PARSE_LONG,
+            METHOD_PARSE_FLOAT,
+            METHOD_PARSE_DOUBLE
+        )
     }
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
         if (context.evaluator.isMemberInSubClassOf(method, CLS_NUMBER, true)) {
-            val qualifiedName = method.containingClass?.qualifiedName ?: ""
+            val clsName = method.containingClass?.qualifiedName ?: ""
             when (val firstParamExp = node.getArgumentForParameter(0)) {
                 is JavaULiteralExpression -> {
-                    validParam(context, node, method, firstParamExp.value as String, qualifiedName)
+                    validParam(context, node, method, firstParamExp.value as String, clsName)
                 }
                 is KotlinStringULiteralExpression -> {
-                    validParam(context, node, method, firstParamExp.value, qualifiedName)
+                    validParam(context, node, method, firstParamExp.value, clsName)
                 }
                 else -> {
-                    report(context, node, "Please use the unified tool class")
+                    handleNonConstParam(context, node, method, clsName)
                 }
             }
-
         }
     }
 
-    private fun validParam(context: JavaContext,
-            node: UCallExpression,
-            method: PsiMethod,
-            numParam: String,
-            qualifiedName: String) {
+    private fun handleNonConstParam(
+        context: JavaContext, node: UCallExpression, method: PsiMethod, clsName: String
+    ) {
+        val reportMsg = getStringConfig(KEY_REPORT_MESSAGE) ?: "Please use the unified tool class"
+        val isKotlinCode = context.psiFile is KtFile
+        val receiverTxt = DetectorUtils.getReceiverTxt(node.receiver)
+        val builder = fix().alternatives()
+
+        fixes?.forEach {
+            val compositeBuilder = fix().name(it.displayName).composite()
+
+            var newMethodName =
+                if (method.name == METHOD_VALUE_OF) getParseMethod(clsName) else method.name
+            newMethodName = it.methodMap?.get(newMethodName) ?: newMethodName
+
+            // 替换方法名必须在替换Receiver之前
+            compositeBuilder.add(
+                createReplaceMethodFix(
+                    method.name, newMethodName, it.isStaticMethod, null
+                )
+            )
+            it.className?.apply {
+                compositeBuilder.add(
+                    createReplaceReceiverFix(
+                        this, isKotlinCode, it.isStaticMethod, receiverTxt
+                    )
+                )
+            }
+
+            builder.add(compositeBuilder.build())
+        }
+        report(context, node, reportMsg, builder.build())
+    }
+
+    private fun validParam(
+        context: JavaContext,
+        node: UCallExpression,
+        method: PsiMethod,
+        numParam: String,
+        clsName: String
+    ) {
         try {
-            when (qualifiedName) {
+            when (clsName) {
                 CLS_BYTE -> numParam.toByte()
                 CLS_SHORT -> numParam.toShort()
                 CLS_INTEGER -> numParam.toInt()
@@ -97,25 +138,25 @@ class NumParseDetector : BaseConfigDetector(), SourceCodeScanner {
                 CLS_Float -> numParam.toFloat()
                 CLS_Double -> numParam.toDouble()
             }
-
-
             if (METHOD_VALUE_OF == method.name) {
-                replaceValueOfMethod(context, node, qualifiedName)
+                replaceValueOfMethod(context, node, clsName)
             }
         } catch (ex: Exception) {
             report(context, node, "Please pass in the correct parameters")
         }
     }
 
-    private fun replaceValueOfMethod(context: JavaContext,
-            node: UCallExpression,
-            qualifiedName: String) {
-        val parseMethod = getParseMethod(qualifiedName)
+    private fun replaceValueOfMethod(
+        context: JavaContext, node: UCallExpression, clsName: String
+    ) {
+        val parseMethod = getParseMethod(clsName)
         if (parseMethod.isNotBlank()) {
-            report(context,
-                    node,
-                    "Please replace $METHOD_VALUE_OF to $parseMethod.",
-                    fix().replace().text(METHOD_VALUE_OF).with(parseMethod).autoFix().build())
+            report(
+                context,
+                node,
+                "Please replace $METHOD_VALUE_OF to $parseMethod.",
+                fix().replace().text(METHOD_VALUE_OF).with(parseMethod).autoFix().build()
+            )
         }
     }
 
@@ -131,10 +172,9 @@ class NumParseDetector : BaseConfigDetector(), SourceCodeScanner {
         }
     }
 
-    private fun report(context: JavaContext,
-            node: UCallExpression,
-            message: String,
-            quickfixData: LintFix? = null) {
+    private fun report(
+        context: JavaContext, node: UCallExpression, message: String, quickfixData: LintFix? = null
+    ) {
         context.report(ISSUE, node, context.getLocation(node), message, quickfixData)
     }
 }
