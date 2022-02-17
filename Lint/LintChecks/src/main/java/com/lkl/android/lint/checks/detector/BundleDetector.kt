@@ -7,16 +7,17 @@ import org.jetbrains.uast.UCallExpression
 
 
 /**
- * 检查Intent里部分方法的使用
+ * 检查Bundle里部分方法的使用
  *
  * @author lkl
- * @since 2022/02/15
+ * @since 2022/02/17
  */
 @Suppress("UnstableApiUsage")
-class IntentDetector : BaseSourceCodeDetector() {
+class BundleDetector : BaseSourceCodeDetector() {
 
     companion object {
-        const val CLS_INTENT = "android.content.Intent"
+        const val CLS_BUNDLE = "android.os.Bundle"
+        const val CLS_BASE_BUNDLE = "android.os.BaseBundle"
 
         /**
          * Issue describing the problem and pointing to the detector
@@ -24,22 +25,22 @@ class IntentDetector : BaseSourceCodeDetector() {
          */
         @JvmField
         val ISSUE: Issue = Issue.create( // ID: used in @SuppressLint warnings etc
-            id = "IntentUsage", // Title -- shown in the IDE's preference dialog, as category headers in the
+            id = "BundleUsage", // Title -- shown in the IDE's preference dialog, as category headers in the
             // Analysis results window, etc
-            briefDescription = "Do not directly invoke $CLS_INTENT some methods.", // Full explanation of the issue; you can use some markdown markup such as
+            briefDescription = "Do not directly invoke $CLS_BUNDLE some methods.", // Full explanation of the issue; you can use some markdown markup such as
             // `monospace`, *italic*, and **bold**.
-            explanation = "Do not directly invoke $CLS_INTENT some methods, should use the unified tool class", // no need to .trimIndent(), lint does that automatically
+            explanation = "Do not directly invoke $CLS_BUNDLE some methods, should use the unified tool class", // no need to .trimIndent(), lint does that automatically
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,
             implementation = Implementation(
-                IntentDetector::class.java, Scope.JAVA_FILE_SCOPE
+                BundleDetector::class.java, Scope.JAVA_FILE_SCOPE
             )
         )
     }
 
     override fun getUsageConfig(): JsonObject? {
-        return getUsageConfig("intent-usage")
+        return getUsageConfig("bundle-usage")
     }
 
     override fun getApplicableMethodNames(): List<String> {
@@ -47,9 +48,9 @@ class IntentDetector : BaseSourceCodeDetector() {
     }
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
-        if (context.evaluator.isMemberInClass(method, CLS_INTENT)) {
+        if (context.evaluator.isMemberInSubClassOf(method, CLS_BASE_BUNDLE)) {
             val reportMessage = getStringConfig(KEY_REPORT_MESSAGE)
-                ?: "Do not directly invoke $CLS_INTENT some methods."
+                ?: "Do not directly invoke $CLS_BUNDLE some methods."
 
             context.report(
                 ISSUE, node, context.getLocation(node), reportMessage, getFix(context, node, method)

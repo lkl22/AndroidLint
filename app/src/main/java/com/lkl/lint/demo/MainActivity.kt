@@ -51,5 +51,10 @@ class MainActivity : AppCompatActivity() {
         savedInstanceState?.getBoolean("int", true)
         savedInstanceState?.getInt("int", 2)
         savedInstanceState?.getString("string", "")
+
+        val bundle = Bundle()
+        bundle.getBoolean("int", false)
+        bundle.getInt("int", 2)
+        bundle.getString("string", "")
     }
 }

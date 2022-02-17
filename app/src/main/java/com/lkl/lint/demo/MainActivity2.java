@@ -51,5 +51,10 @@ public class MainActivity2 extends AppCompatActivity {
         savedInstanceState.getBoolean("int", false);
         savedInstanceState.getInt("int", 2);
         savedInstanceState.getString("string", "");
+
+        Bundle bundle = new Bundle();
+        bundle.getBoolean("int", false);
+        bundle.getInt("int", 2);
+        bundle.getString("string", "");
     }
 }
