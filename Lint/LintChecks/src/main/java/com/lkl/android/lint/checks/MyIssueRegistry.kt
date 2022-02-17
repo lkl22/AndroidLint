@@ -28,6 +28,7 @@ class MyIssueRegistry : IssueRegistry() {
         listOf(
             LogDetector.ISSUE,
             IntentDetector.ISSUE,
+            BundleDetector.ISSUE,
             ExportedAttrDetector.ISSUE,
             UsesPermissionDetector.ISSUE,
             NumParseDetector.ISSUE

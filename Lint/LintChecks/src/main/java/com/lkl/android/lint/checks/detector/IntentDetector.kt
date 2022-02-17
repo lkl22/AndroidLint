@@ -3,8 +3,6 @@ package com.lkl.android.lint.checks.detector
 import com.android.tools.lint.detector.api.*
 import com.google.gson.JsonObject
 import com.intellij.psi.PsiMethod
-import com.lkl.android.lint.checks.utils.DetectorUtils
-import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.uast.UCallExpression
 
 
@@ -15,7 +13,7 @@ import org.jetbrains.uast.UCallExpression
  * @since 2022/02/15
  */
 @Suppress("UnstableApiUsage")
-class IntentDetector : BaseConfigDetector(), SourceCodeScanner {
+class IntentDetector : BaseSourceCodeDetector() {
 
     companion object {
         const val INTENT_CLS = "android.content.Intent"
@@ -50,9 +48,6 @@ class IntentDetector : BaseConfigDetector(), SourceCodeScanner {
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
         if (context.evaluator.isMemberInClass(method, INTENT_CLS)) {
-            if (customConfig == null) {
-                return
-            }
             val reportMessage = getStringConfig(KEY_REPORT_MESSAGE)
                 ?: "Do not directly invoke $INTENT_CLS some methods."
 
@@ -62,37 +57,7 @@ class IntentDetector : BaseConfigDetector(), SourceCodeScanner {
         }
     }
 
-    private fun getFix(
-        context: JavaContext, node: UCallExpression, method: PsiMethod
-    ): LintFix { // isKotlin(method)不准
-        val isKotlinCode = context.psiFile is KtFile
-        val receiverTxt = DetectorUtils.getReceiverTxt(node.receiver)
-
-        val groupFixDisplayName = getStringConfig(KEY_FIX_DISPLAY_NAME)
-        val builder = fix().name(groupFixDisplayName).alternatives()
-
-        fixes?.forEach {
-            val compositeBuilder = fix().name(it.displayName).composite()
-
-            // 替换方法名必须在替换Receiver之前
-            compositeBuilder.add(
-                createReplaceMethodFix(
-                    method.name,
-                    it.methodMap?.get(method.name) ?: method.name,
-                    it.isStaticMethod,
-                    receiverTxt
-                )
-            )
-            it.className?.apply {
-                compositeBuilder.add(
-                    createReplaceReceiverFix(
-                        this, isKotlinCode, it.isStaticMethod, receiverTxt
-                    )
-                )
-            }
-
-            builder.add(compositeBuilder.build())
-        }
-        return builder.build()
+    override fun getFirstParam(isStaticMethod: Boolean, receiverTxt: String): String? {
+        return if (isStaticMethod) receiverTxt else null
     }
 }

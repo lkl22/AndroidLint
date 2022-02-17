@@ -1,8 +1,12 @@
 {
   "log-usage": {
-    "fixDisplayName": "Replace Log() with LogUtils()",
-    "fixClassName": "com.lkl.lint.commonlib.utils.LogUtils",
-    "reportMessage": "Do not directly invoke android.util.Log methods.Please use com.lkl.lint.commonlib.utils.LogUtils replace."
+    "reportMessage": "Do not directly invoke android.util.Log methods.Please use com.lkl.lint.commonlib.utils.LogUtils replace.",
+    "fixes": [
+      {
+        "displayName": "Replace Log() with LogUtils()",
+        "className": "com.lkl.lint.commonlib.utils.LogUtils"
+      }
+    ]
   },
   "intent-usage": {
     "reportMessage": "Do not directly invoke android.content.Intent some methods.",
@@ -39,7 +43,6 @@
       "getIBinderExtra",
       "getExtras"
     ],
-    "fixDisplayName": "Replace Intent",
     "fixes": [
       {
         "displayName": "Replace Intent with SafeIntent",
@@ -52,6 +55,28 @@
         "methodMap": {
           "getBooleanExtra": "safeGetBooleanExtra"
         }
+      }
+    ]
+  },
+  "bundle-usage": {
+    "reportMessage": "Do not directly invoke android.os.Bundle some methods.",
+    "detectMethodNames": [
+      "getInt",
+      "getBoolean",
+      "getString"
+    ],
+    "fixes": [
+      {
+        "displayName": "Replace Bundle with BundleUtils",
+        "className": "com.lkl.lint.commonlib.utils.BundleUtils",
+        "isStaticMethod": "true",
+        "methodMap": {
+          "getBoolean": "safeGetBoolean"
+        }
+      },
+      {
+        "displayName": "Replace Bundle with SafeBundle",
+        "className": "com.lkl.lint.commonlib.utils.SafeBundle"
       }
     ]
   },

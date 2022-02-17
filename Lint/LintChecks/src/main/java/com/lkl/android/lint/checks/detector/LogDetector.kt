@@ -13,7 +13,7 @@ import org.jetbrains.uast.UCallExpression
  * @since 2022/02/15
  */
 @Suppress("UnstableApiUsage")
-class LogDetector : BaseConfigDetector(), SourceCodeScanner {
+class LogDetector : BaseSourceCodeDetector() {
     companion object {
         /**
          * Issue describing the problem and pointing to the detector
@@ -33,8 +33,7 @@ class LogDetector : BaseConfigDetector(), SourceCodeScanner {
             priority = 6,
             severity = Severity.ERROR,
             implementation = Implementation(
-                LogDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
+                LogDetector::class.java, Scope.JAVA_FILE_SCOPE
             )
         )
     }
@@ -49,33 +48,32 @@ class LogDetector : BaseConfigDetector(), SourceCodeScanner {
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
         if (context.evaluator.isMemberInClass(
-                method,
-                com.android.tools.lint.checks.LogDetector.LOG_CLS
+                method, com.android.tools.lint.checks.LogDetector.LOG_CLS
             )
         ) {
-            if (customConfig == null) {
-                return
-            }
-            val reportMessage =
-                getStringConfig(KEY_REPORT_MESSAGE) ?: "Do not directly invoke android.util.Log methods."
-            val fixDisplayName = getStringConfig(KEY_FIX_DISPLAY_NAME)
-            val fixClassName = getStringConfig(KEY_FIX_CLASS_NAME)
-            val location = context.getCallLocation(node, true, false)
-            val fix = if (fixClassName.isNullOrBlank()) null else
-                fix().replace()
-                    .name(fixDisplayName)
-                    .range(location)
-                    .with("${fixClassName}.${method.name}")
-                    .shortenNames()
-                    .autoFix()
-                    .build()
+            val reportMessage = getStringConfig(KEY_REPORT_MESSAGE)
+                ?: "Do not directly invoke android.util.Log methods."
+
             context.report(
                 ISSUE,
                 node,
                 context.getLocation(node),
                 reportMessage,
-                fix
+                getLogFix(context, node, method)
             )
         }
+    }
+
+    private fun getLogFix(
+        context: JavaContext, node: UCallExpression, method: PsiMethod
+    ): LintFix? {
+        val fixItem = fixes?.get(0)
+        fixItem?.apply {
+            val location = context.getCallLocation(node, true, false)
+            return if (className.isNullOrBlank()) null else fix().replace().name(displayName)
+                .range(location).with("${className}.${method.name}").shortenNames().autoFix()
+                .build()
+        }
+        return null
     }
 }

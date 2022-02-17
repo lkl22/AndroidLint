@@ -47,5 +47,9 @@ class MainActivity : AppCompatActivity() {
 
         Integer.valueOf(num)
         Integer.parseInt(num)
+
+        savedInstanceState?.getBoolean("int", true)
+        savedInstanceState?.getInt("int", 2)
+        savedInstanceState?.getString("string", "")
     }
 }

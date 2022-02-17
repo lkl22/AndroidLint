@@ -1,5 +1,6 @@
 package com.lkl.lint.demo;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -46,5 +47,9 @@ public class MainActivity2 extends AppCompatActivity {
 
         Integer.valueOf(num);
         Integer.parseInt(num);
+
+        savedInstanceState.getBoolean("int", false);
+        savedInstanceState.getInt("int", 2);
+        savedInstanceState.getString("string", "");
     }
 }

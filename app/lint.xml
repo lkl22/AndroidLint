@@ -1,4 +1,5 @@
 <lint>
     <issue id="LogUsage" severity="ignore" />
     <issue id="IntentUsage" severity="ignore" />
+    <issue id="NumParseUsage" severity="ignore" />
 </lint>
