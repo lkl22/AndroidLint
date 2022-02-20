@@ -43,11 +43,13 @@ abstract class BaseSourceCodeDetector : BaseConfigDetector(), SourceCodeScanner 
             if (receiverTxt.isBlank()) {
                 compositeBuilder.add(
                     createReplaceMethodFix(
-                        method.name, "${it.className}.${newMethodName}", "this"
+                        method.name,
+                        "${it.className}.${newMethodName}",
+                        if (it.needCallerParam) "this" else null
                     )
                 )
             } else {
-                val firstParam = getFirstParam(it.isStaticMethod, receiverTxt)
+                val firstParam = if (it.needCallerParam) receiverTxt else null
                 // 替换方法名必须在替换Receiver之前
                 if (method.name != newMethodName || !firstParam.isNullOrBlank()) {
                     // 方法名需要修改或者需要添加第一个参数才需要该fix
@@ -77,19 +79,11 @@ abstract class BaseSourceCodeDetector : BaseConfigDetector(), SourceCodeScanner 
      * @param methodName 原有方法名
      * @return 新的方法名
      */
-    open protected fun getNewMethodName(methodMap: Map<String, String>?, methodName: String): String {
+    open protected fun getNewMethodName(
+        methodMap: Map<String, String>?,
+        methodName: String
+    ): String {
         return methodMap?.get(methodName) ?: methodName
-    }
-
-    /**
-     * 获取要插入第一个位置的参数，默认不需要
-     *
-     * @param isStaticMethod true 要替换的方法是静态方法
-     * @param receiverTxt 原有方法的调用方
-     * @return 要插入第一个位置的参数
-     */
-    open protected fun getFirstParam(isStaticMethod: Boolean, receiverTxt: String): String? {
-        return null
     }
 
     /**

@@ -57,8 +57,4 @@ class BundleDetector : BaseSourceCodeDetector() {
             )
         }
     }
-
-    override fun getFirstParam(isStaticMethod: Boolean, receiverTxt: String): String? {
-        return if (isStaticMethod) receiverTxt else null
-    }
 }

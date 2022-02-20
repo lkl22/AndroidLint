@@ -1,13 +1,11 @@
 package com.lkl.lint.demo;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.lkl.lint.commonlib.utils.JumpUtils;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity2 extends AppCompatActivity {
     private static final String TAG = "MainActivity2";
@@ -59,7 +57,9 @@ public class MainActivity2 extends AppCompatActivity {
         bundle.getInt("int", 2);
         bundle.getString("string", "");
 
-        JumpUtils.safeStartActivity(this, new Intent());
-        JumpUtils.startActivityForResult(this, new Intent(), 3);
+        startActivity(new Intent());
+        startActivityForResult(new Intent(), 3);
+
+        Color.parseColor("#fff");
     }
 }

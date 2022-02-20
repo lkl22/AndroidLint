@@ -1,10 +1,10 @@
 package com.lkl.lint.demo
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.lkl.lint.commonlib.utils.JumpUtils
 import com.lkl.lint.demo.R.*
 
 class MainActivity : AppCompatActivity() {
@@ -59,7 +59,9 @@ class MainActivity : AppCompatActivity() {
         bundle.getInt("int", 2)
         bundle.getString("string", "")
 
-        JumpUtils.safeStartActivity(this, Intent())
-        JumpUtils.startActivityForResult(this, Intent(), 2)
+        startActivity(Intent())
+        startActivityForResult(Intent(), 2)
+
+        Color.parseColor("#fff")
     }
 }

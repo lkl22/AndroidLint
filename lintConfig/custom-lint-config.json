@@ -19,9 +19,52 @@
         "displayName": "Replace cur method with JumpUtils's method.",
         "className": "com.lkl.lint.commonlib.utils.JumpUtils",
         "isStaticMethod": "true",
+        "needCallerParam": "true",
         "methodMap": {
           "startActivity": "safeStartActivity"
         }
+      }
+    ]
+  },
+  "api-usage": {
+    "reportMessage": "Do not directly invoke this method.",
+    "deprecatedMethod": [
+      {
+        "className": "android.content.Context",
+        "buildVariant": "release",
+        "methodNames": [
+          "startActivity",
+          "startActivityForResult"
+        ],
+        "fixes": [
+          {
+            "displayName": "Replace cur method with JumpUtils's method.",
+            "className": "com.lkl.lint.commonlib.utils.JumpUtils",
+            "isStaticMethod": "true",
+            "needCallerParam": "true",
+            "methodMap": {
+              "startActivity": "safeStartActivity"
+            }
+          }
+        ]
+      },
+      {
+        "className": "android.content.Intent",
+        "buildVariant": "release",
+        "methodNames": [
+          "getExtra",
+          "getBooleanExtra"
+        ]
+      }
+    ],
+    "handleException": [
+      {
+        "className": "android.graphics.Color",
+        "buildVariant": "product",
+        "reportMessage": "Do not directly invoke parseColor method.",
+        "methodNames": [
+          "parseColor"
+        ]
       }
     ]
   },
@@ -69,6 +112,7 @@
         "displayName": "Replace Intent with IntentUtils",
         "className": "com.lkl.lint.commonlib.utils.IntentUtils",
         "isStaticMethod": "true",
+        "needCallerParam": "true",
         "methodMap": {
           "getBooleanExtra": "safeGetBooleanExtra"
         }
@@ -87,6 +131,7 @@
         "displayName": "Replace Bundle with BundleUtils",
         "className": "com.lkl.lint.commonlib.utils.BundleUtils",
         "isStaticMethod": "true",
+        "needCallerParam": "true",
         "methodMap": {
           "getBoolean": "safeGetBoolean"
         }

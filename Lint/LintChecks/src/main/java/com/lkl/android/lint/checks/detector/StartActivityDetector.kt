@@ -7,10 +7,10 @@ import org.jetbrains.uast.UCallExpression
 
 
 /**
- * 检查Bundle里部分方法的使用
+ * 检查启动activity方法的使用
  *
  * @author lkl
- * @since 2022/02/17
+ * @since 2022/02/20
  */
 @Suppress("UnstableApiUsage")
 class StartActivityDetector : BaseSourceCodeDetector() {
@@ -57,9 +57,5 @@ class StartActivityDetector : BaseSourceCodeDetector() {
                 ISSUE, node, context.getLocation(node), reportMessage, getFix(context, node, method)
             )
         }
-    }
-
-    override fun getFirstParam(isStaticMethod: Boolean, receiverTxt: String): String? {
-        return if (isStaticMethod) receiverTxt else null
     }
 }

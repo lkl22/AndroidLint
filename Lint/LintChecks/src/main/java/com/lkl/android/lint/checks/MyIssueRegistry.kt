@@ -32,7 +32,8 @@ class MyIssueRegistry : IssueRegistry() {
             BundleDetector.ISSUE,
             ExportedAttrDetector.ISSUE,
             UsesPermissionDetector.ISSUE,
-            NumParseDetector.ISSUE
+            NumParseDetector.ISSUE,
+            ApiDetector.ISSUE
         )
 
     override val api: Int
