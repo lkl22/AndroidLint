@@ -27,6 +27,7 @@ class MyIssueRegistry : IssueRegistry() {
     override val issues =
         listOf(
             LogDetector.ISSUE,
+            StartActivityDetector.ISSUE,
             IntentDetector.ISSUE,
             BundleDetector.ISSUE,
             ExportedAttrDetector.ISSUE,

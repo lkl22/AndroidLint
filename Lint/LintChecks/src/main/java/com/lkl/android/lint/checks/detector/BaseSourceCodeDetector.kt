@@ -39,26 +39,32 @@ abstract class BaseSourceCodeDetector : BaseConfigDetector(), SourceCodeScanner 
 
         fixes?.forEach {
             val compositeBuilder = fix().name(it.displayName).composite()
-
             val newMethodName = getNewMethodName(it.methodMap, method.name)
-            val firstParam = getFirstParam(it.isStaticMethod, receiverTxt)
-            // 替换方法名必须在替换Receiver之前
-            if (method.name != newMethodName || !firstParam.isNullOrBlank()) {
-                // 方法名需要修改或者需要添加第一个参数才需要该fix
+            if (receiverTxt.isBlank()) {
                 compositeBuilder.add(
                     createReplaceMethodFix(
-                        method.name, newMethodName, firstParam
+                        method.name, "${it.className}.${newMethodName}", "this"
                     )
                 )
-            }
-            it.className?.apply {
-                compositeBuilder.add(
-                    createReplaceReceiverFix(
-                        this, isKotlinCode, it.isStaticMethod, receiverTxt
+            } else {
+                val firstParam = getFirstParam(it.isStaticMethod, receiverTxt)
+                // 替换方法名必须在替换Receiver之前
+                if (method.name != newMethodName || !firstParam.isNullOrBlank()) {
+                    // 方法名需要修改或者需要添加第一个参数才需要该fix
+                    compositeBuilder.add(
+                        createReplaceMethodFix(
+                            method.name, newMethodName, firstParam
+                        )
                     )
-                )
+                }
+                it.className?.apply {
+                    compositeBuilder.add(
+                        createReplaceReceiverFix(
+                            this, isKotlinCode, it.isStaticMethod, receiverTxt
+                        )
+                    )
+                }
             }
-
             builder.add(compositeBuilder.build())
         }
         return builder.build()

@@ -8,6 +8,23 @@
       }
     ]
   },
+  "start-activity-usage": {
+    "reportMessage": "Do not directly invoke start activity some methods.",
+    "detectMethodNames": [
+      "startActivity",
+      "startActivityForResult"
+    ],
+    "fixes": [
+      {
+        "displayName": "Replace cur method with JumpUtils's method.",
+        "className": "com.lkl.lint.commonlib.utils.JumpUtils",
+        "isStaticMethod": "true",
+        "methodMap": {
+          "startActivity": "safeStartActivity"
+        }
+      }
+    ]
+  },
   "intent-usage": {
     "reportMessage": "Do not directly invoke android.content.Intent some methods.",
     "detectMethodNames": [

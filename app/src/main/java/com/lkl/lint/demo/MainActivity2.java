@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.lkl.lint.commonlib.utils.JumpUtils;
+
 public class MainActivity2 extends AppCompatActivity {
     private static final String TAG = "MainActivity2";
 
@@ -56,5 +58,8 @@ public class MainActivity2 extends AppCompatActivity {
         bundle.getBoolean("int", false);
         bundle.getInt("int", 2);
         bundle.getString("string", "");
+
+        JumpUtils.safeStartActivity(this, new Intent());
+        JumpUtils.startActivityForResult(this, new Intent(), 3);
     }
 }

@@ -1,5 +1,7 @@
 <lint>
     <issue id="LogUsage" severity="ignore" />
+    <issue id="StartActivityUsage" severity="ignore" />
     <issue id="IntentUsage" severity="ignore" />
+    <issue id="BundleUsage" severity="ignore" />
     <issue id="NumParseUsage" severity="ignore" />
 </lint>
