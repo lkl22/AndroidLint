@@ -31,6 +31,7 @@ class MyIssueRegistry : IssueRegistry() {
             IntentDetector.ISSUE,
             BundleDetector.ISSUE,
             ExportedAttrDetector.ISSUE,
+            ApplicationAttrDetector.ISSUE,
             UsesPermissionDetector.ISSUE,
             NumParseDetector.ISSUE,
             ApiDetector.ISSUE

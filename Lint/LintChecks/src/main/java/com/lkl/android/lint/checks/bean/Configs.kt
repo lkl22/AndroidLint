@@ -17,6 +17,14 @@ data class ExportedIgnoreCfg(
     var providers: List<ExportedIgnoreItem>?
 )
 
+
+data class AttrItem(
+    var attrName: String?,
+    var attrValue: String?,
+    var buildVariant: String?,
+    var namespace: String?
+)
+
 data class PermissionIgnoreItem(var permissionName: String?, var reason: String?)
 
 data class ApiItem(

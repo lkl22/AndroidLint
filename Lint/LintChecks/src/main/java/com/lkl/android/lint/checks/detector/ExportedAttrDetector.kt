@@ -52,7 +52,7 @@ class ExportedAttrDetector : BaseConfigDetector(), XmlScanner {
     }
 
     override fun getUsageConfig(): JsonObject? {
-        return getUsageConfig("ExportedAttribute")
+        return getUsageConfig("exported-attr")
     }
 
     override fun getApplicableElements(): Collection<String> {

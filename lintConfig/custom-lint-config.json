@@ -166,7 +166,7 @@
       }
     ]
   },
-  "ExportedAttribute": {
+  "exported-attr": {
     "ignores": {
       "activities": [
         {
@@ -197,5 +197,19 @@
         }
       ]
     }
+  },
+  "application-attr": {
+    "attrs": [
+      {
+        "attrName": "debuggable",
+        "attrValue": "false",
+        "buildVariant": "debug"
+      },
+      {
+        "attrName": "allowBackup",
+        "attrValue": "false",
+        "namespace": "http://schemas.android.com/apk/res/android"
+      }
+    ]
   }
 }
