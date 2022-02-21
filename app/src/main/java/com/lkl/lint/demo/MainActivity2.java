@@ -2,6 +2,7 @@ package com.lkl.lint.demo;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -61,5 +62,11 @@ public class MainActivity2 extends AppCompatActivity {
         startActivityForResult(new Intent(), 3);
 
         Color.parseColor("#fff");
+
+        new Uri.Builder()
+                .scheme("https://")
+                .path("hello")
+                .appendQueryParameter("host", "baidu")
+                .build();
     }
 }

@@ -26,6 +26,48 @@
       }
     ]
   },
+  "method-param-usage": {
+    "reportMessage": "Please use the specified parameters.",
+    "methods": [
+      {
+        "reportMessage": "Please use the specified scheme parameters.",
+        "className": "android.net.Uri.Builder",
+        "buildVariant": "product",
+        "methodName": "scheme",
+        "params": [
+          {
+            "index": 0,
+            "value": "\"https://\""
+          }
+        ]
+      },
+      {
+        "reportMessage": "Please use the specified path parameters.",
+        "className": "android.net.Uri.Builder",
+        "methodName": "path",
+        "params": [
+          {
+            "index": 0,
+            "value": "\"hello\""
+          }
+        ]
+      },
+      {
+        "className": "android.net.Uri.Builder",
+        "methodName": "appendQueryParameter",
+        "params": [
+          {
+            "index": 0,
+            "value": "\"host\""
+          },
+          {
+            "index": 1,
+            "value": "\"baidu\""
+          }
+        ]
+      }
+    ]
+  },
   "api-usage": {
     "reportMessage": "Do not directly invoke this method.",
     "deprecatedMethod": [

@@ -19,10 +19,7 @@ data class ExportedIgnoreCfg(
 
 
 data class AttrItem(
-    var attrName: String?,
-    var attrValue: String?,
-    var buildVariant: String?,
-    var namespace: String?
+    var attrName: String?, var attrValue: String?, var buildVariant: String?, var namespace: String?
 )
 
 data class PermissionIgnoreItem(var permissionName: String?, var reason: String?)
@@ -41,3 +38,14 @@ data class ApiUsage(
     var handleException: List<ApiItem>?
 )
 
+data class ParamInfo(var index: Int = -1, var value: String?)
+
+data class MethodParamItem(
+    var className: String?,
+    var methodName: String?,
+    var buildVariant: String?,
+    var reportMessage: String?,
+    var params: List<ParamInfo>?
+)
+
+data class MethodParamConfig(var reportMessage: String?, var methods: List<MethodParamItem>?)

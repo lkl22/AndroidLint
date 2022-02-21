@@ -32,7 +32,7 @@ class ApiDetector : BaseSourceCodeDetector() {
             briefDescription = "Do not directly invoke this methods.",
             // Full explanation of the issue; you can use some markdown markup such as
             // `monospace`, *italic*, and **bold**.
-            explanation = "Do not directly invoke this methods, should use the unified tool class", // no need to .trimIndent(), lint does that automatically
+            explanation = "Do not directly invoke this methods, should use the unified tool class.", // no need to .trimIndent(), lint does that automatically
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,
