@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply from: '../../GradleConfig/common-build.gradle'
-//apply from: '../../GradleConfig/local-publish-build.gradle'
-apply from: '../../GradleConfig/publish-mavencentral.gradle'
+apply from: '../../GradleConfig/local-publish-build.gradle'
+//apply from: '../../GradleConfig/publish-mavencentral.gradle'
 
 android {
     lintOptions {

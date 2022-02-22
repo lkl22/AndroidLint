@@ -26,7 +26,7 @@ import javax.xml.xpath.XPathFactory;
 public class XMLMergeUtil {
 
     public static void merge(OutputStream outputStream, String expression,
-                                 InputStream... inputStreams) throws Exception {
+            InputStream... inputStreams) throws Exception {
         XPathFactory xPathFactory = XPathFactory.newInstance();
         XPath xpath = xPathFactory.newXPath();
         XPathExpression compiledExpression = xpath
@@ -35,14 +35,11 @@ public class XMLMergeUtil {
 
         print(doc, outputStream);
 
-        for (InputStream inputStream : inputStreams) {
-            IOUtils.closeQuietly(inputStream);
-        }
+        IOUtils.closeQuietly(inputStreams);
         IOUtils.closeQuietly(outputStream);
     }
 
-    public static Document merge(String expression,
-                                  InputStream... inputStreams) throws Exception {
+    public static Document merge(String expression, InputStream... inputStreams) throws Exception {
         XPathFactory xPathFactory = XPathFactory.newInstance();
         XPath xpath = xPathFactory.newXPath();
         XPathExpression compiledExpression = xpath
@@ -51,7 +48,7 @@ public class XMLMergeUtil {
     }
 
     private static Document merge(XPathExpression expression,
-                                  InputStream... inputStreams) throws Exception {
+            InputStream... inputStreams) throws Exception {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
                 .newInstance();
         docBuilderFactory
@@ -61,16 +58,14 @@ public class XMLMergeUtil {
         Document base = docBuilder.parse(inputStreams[0]);
 
         Node results = (Node) expression.evaluate(base,
-                                                  XPathConstants.NODE);
+                XPathConstants.NODE);
         if (results == null) {
-            throw new IOException(inputStreams[0]
-                                          + ": expression does not evaluate to node");
+            throw new IOException(inputStreams[0] + ": expression does not evaluate to node");
         }
 
         for (int i = 1; i < inputStreams.length; i++) {
             Document merge = docBuilder.parse(inputStreams[i]);
-            Node nextResults = (Node) expression.evaluate(merge,
-                                                          XPathConstants.NODE);
+            Node nextResults = (Node) expression.evaluate(merge, XPathConstants.NODE);
             while (nextResults.hasChildNodes()) {
                 Node kid = nextResults.getFirstChild();
                 nextResults.removeChild(kid);

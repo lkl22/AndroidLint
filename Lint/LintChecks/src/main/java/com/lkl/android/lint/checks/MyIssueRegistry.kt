@@ -42,7 +42,7 @@ class MyIssueRegistry : IssueRegistry() {
         get() = CURRENT_API
 
     override val minApi: Int
-        get() = 8 // works with Studio 4.1 or later; see com.android.tools.lint.detector.api.Api / ApiKt
+        get() = 6 // works with Studio 4.1 or later; see com.android.tools.lint.detector.api.Api / ApiKt
 
     // Requires lint API 30.0+; if you're still building for something
     // older, just remove this property.

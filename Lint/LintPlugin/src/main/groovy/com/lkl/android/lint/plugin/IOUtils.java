@@ -1,5 +1,6 @@
 package com.lkl.android.lint.plugin;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,28 +11,20 @@ import java.io.OutputStream;
  * Created by chentong on 29/12/15.
  */
 public class IOUtils {
-    public static void closeQuietly(InputStream input) {
-        try {
-            if(input != null) {
-                input.close();
+    public static void closeQuietly(Closeable... closeables) {
+        if (closeables != null) {
+            try {
+                for (Closeable closeable : closeables) {
+                    closeable.close();
+                }
+            } catch (IOException ex) {
             }
-        } catch (IOException var2) {
         }
-
     }
 
-    public static void closeQuietly(OutputStream output) {
-        try {
-            if(output != null) {
-                output.close();
-            }
-        } catch (IOException var2) {
-        }
-
-    }
     public static int copy(InputStream input, OutputStream output) throws IOException {
         long count = copyLarge(input, output);
-        return count > 2147483647L?-1:(int)count;
+        return count > 2147483647L ? -1 : (int) count;
     }
 
     private static long copyLarge(InputStream input, OutputStream output) throws IOException {
@@ -39,7 +32,7 @@ public class IOUtils {
         long count = 0L;
 
         int n1;
-        for(boolean n = false; -1 != (n1 = input.read(buffer)); count += (long)n1) {
+        for (boolean n = false; -1 != (n1 = input.read(buffer)); count += (long) n1) {
             output.write(buffer, 0, n1);
         }
 
