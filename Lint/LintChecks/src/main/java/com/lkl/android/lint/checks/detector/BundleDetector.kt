@@ -48,7 +48,7 @@ class BundleDetector : BaseSourceCodeDetector() {
     }
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
-        if (context.evaluator.isMemberInSubClassOf(method, CLS_BASE_BUNDLE)) {
+        if (context.evaluator.isMemberInSubClassOf(method, CLS_BASE_BUNDLE, false)) {
             val reportMessage = getStringConfig(KEY_REPORT_MESSAGE)
                 ?: "Do not directly invoke $CLS_BUNDLE some methods."
 

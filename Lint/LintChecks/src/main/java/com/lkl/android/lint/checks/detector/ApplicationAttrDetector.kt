@@ -59,7 +59,7 @@ class ApplicationAttrDetector : BaseConfigDetector(), XmlScanner {
     override fun visitElement(context: XmlContext, element: Element) {
         attrs?.forEach {
             val isBuildVariant = it.buildVariant?.let { buildVariant ->
-                context.project.buildVariant.name.contains(buildVariant, true)
+                context.project.currentVariant.name.contains(buildVariant, true)
             } ?: true
 
             if (!isBuildVariant) {

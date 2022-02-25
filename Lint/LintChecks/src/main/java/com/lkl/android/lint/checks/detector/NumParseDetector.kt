@@ -74,7 +74,7 @@ class NumParseDetector : BaseSourceCodeDetector() {
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
         if (context.evaluator.isMemberInSubClassOf(method, CLS_NUMBER, true)) {
             curClsName = method.containingClass?.qualifiedName
-            when (val firstParamExp = node.getArgumentForParameter(0)) {
+            when (val firstParamExp = node.valueArguments[0]) {
                 is JavaULiteralExpression -> {
                     validParam(context, node, method, firstParamExp.value as String, curClsName)
                 }

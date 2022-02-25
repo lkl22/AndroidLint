@@ -48,8 +48,8 @@ class StartActivityDetector : BaseSourceCodeDetector() {
     }
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
-        if (context.evaluator.isMemberInSubClassOf(method, CLS_CONTEXT)
-            || context.evaluator.isMemberInSubClassOf(method, CLS_FRAGMENT)) {
+        if (context.evaluator.isMemberInSubClassOf(method, CLS_CONTEXT, false)
+            || context.evaluator.isMemberInSubClassOf(method, CLS_FRAGMENT, false)) {
             val reportMessage = getStringConfig(KEY_REPORT_MESSAGE)
                 ?: "Do not directly invoke start activity some methods."
 

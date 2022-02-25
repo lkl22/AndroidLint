@@ -83,7 +83,7 @@ class MethodParamDetector : BaseSourceCodeDetector() {
             if (paramInfo.index < 0 || paramInfo.index >= method.parameters.size) {
                 return@forEach
             }
-            if (node.getArgumentForParameter(paramInfo.index)
+            if (node.valueArguments[paramInfo.index]
                     ?.asSourceString() != paramInfo.value
             ) {
                 context.report(
@@ -114,7 +114,7 @@ class MethodParamDetector : BaseSourceCodeDetector() {
     ): MethodParamItem? {
         return apiItems.firstOrNull { methodParamItem: MethodParamItem ->
             val isBuildVariant = methodParamItem.buildVariant?.let {
-                context.project.buildVariant.name.contains(it, true)
+                context.project.currentVariant.name.contains(it, true)
             } ?: true
 
             if (!isBuildVariant) {
@@ -124,7 +124,7 @@ class MethodParamDetector : BaseSourceCodeDetector() {
             methodParamItem.methodName?.let { methodName ->
                 if (methodName == method.name) {
                     methodParamItem.className?.let { className ->
-                        context.evaluator.isMemberInSubClassOf(method, className)
+                        context.evaluator.isMemberInSubClassOf(method, className, false)
                     }
                 } else {
                     false

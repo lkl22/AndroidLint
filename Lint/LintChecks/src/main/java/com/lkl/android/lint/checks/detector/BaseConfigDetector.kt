@@ -24,7 +24,7 @@ abstract class BaseConfigDetector : Detector() {
     private var lintConfig: LintConfig? = null
     protected var customConfig: JsonObject? = null
 
-    override fun beforeCheckEachProject(context: Context) {
+    override fun beforeCheckRootProject(context: Context) {
         // 读取配置
         lintConfig = LintConfig(context)
 

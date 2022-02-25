@@ -113,14 +113,14 @@ class ApiDetector : BaseSourceCodeDetector() {
     ): ApiItem? {
         return apiItems.firstOrNull { apiItem: ApiItem ->
             val isBuildVariant = apiItem.buildVariant?.let {
-                context.project.buildVariant.name.contains(it, true)
+                context.project.currentVariant.name.contains(it, true)
             } ?: true
 
             if (!isBuildVariant) {
                 return@firstOrNull false
             }
             apiItem.className?.let { className ->
-                if (context.evaluator.isMemberInSubClassOf(method, className)) {
+                if (context.evaluator.isMemberInSubClassOf(method, className, false)) {
                     apiItem.methodNames?.any { methodName ->
                         methodName == method.name
                     }
