@@ -5,6 +5,7 @@ import com.google.gson.JsonObject
 import com.intellij.psi.PsiMethod
 import com.lkl.android.lint.checks.bean.ApiItem
 import com.lkl.android.lint.checks.bean.ApiUsage
+import com.lkl.android.lint.checks.utils.DetectorUtils
 import com.lkl.android.lint.checks.utils.GsonUtils
 import org.jetbrains.uast.UCallExpression
 import java.util.ArrayList
@@ -112,11 +113,7 @@ class ApiDetector : BaseSourceCodeDetector() {
         apiItems: List<ApiItem>, context: JavaContext, method: PsiMethod
     ): ApiItem? {
         return apiItems.firstOrNull { apiItem: ApiItem ->
-            val isBuildVariant = apiItem.buildVariant?.let {
-                context.project.currentVariant.name.contains(it, true)
-            } ?: true
-
-            if (!isBuildVariant) {
+            if (!DetectorUtils.isBuildVariant(context, apiItem.buildVariant)) {
                 return@firstOrNull false
             }
             apiItem.className?.let { className ->

@@ -5,6 +5,7 @@ import com.android.tools.lint.detector.api.*
 import com.android.xml.AndroidManifest
 import com.google.gson.JsonObject
 import com.lkl.android.lint.checks.bean.AttrItem
+import com.lkl.android.lint.checks.utils.DetectorUtils
 import com.lkl.android.lint.checks.utils.GsonUtils
 import org.w3c.dom.Element
 
@@ -58,11 +59,7 @@ class ApplicationAttrDetector : BaseConfigDetector(), XmlScanner {
 
     override fun visitElement(context: XmlContext, element: Element) {
         attrs?.forEach {
-            val isBuildVariant = it.buildVariant?.let { buildVariant ->
-                context.project.currentVariant.name.contains(buildVariant, true)
-            } ?: true
-
-            if (!isBuildVariant) {
+            if (!DetectorUtils.isBuildVariant(context, it.buildVariant)) {
                 return@forEach
             }
 

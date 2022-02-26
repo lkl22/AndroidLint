@@ -5,6 +5,7 @@ import com.google.gson.JsonObject
 import com.intellij.psi.PsiMethod
 import com.lkl.android.lint.checks.bean.MethodParamConfig
 import com.lkl.android.lint.checks.bean.MethodParamItem
+import com.lkl.android.lint.checks.utils.DetectorUtils
 import com.lkl.android.lint.checks.utils.GsonUtils
 import org.jetbrains.uast.UCallExpression
 import java.util.*
@@ -113,11 +114,7 @@ class MethodParamDetector : BaseSourceCodeDetector() {
         apiItems: List<MethodParamItem>, context: JavaContext, method: PsiMethod
     ): MethodParamItem? {
         return apiItems.firstOrNull { methodParamItem: MethodParamItem ->
-            val isBuildVariant = methodParamItem.buildVariant?.let {
-                context.project.currentVariant.name.contains(it, true)
-            } ?: true
-
-            if (!isBuildVariant) {
+            if (!DetectorUtils.isBuildVariant(context, methodParamItem.buildVariant)) {
                 return@firstOrNull false
             }
 

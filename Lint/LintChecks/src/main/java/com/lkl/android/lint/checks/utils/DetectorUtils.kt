@@ -1,5 +1,6 @@
 package com.lkl.android.lint.checks.utils
 
+import com.android.tools.lint.detector.api.Context
 import org.jetbrains.uast.UExpression
 
 /**
@@ -24,5 +25,18 @@ object DetectorUtils {
 //            else -> ""
 //        }
         return receiver?.asSourceString() ?: ""
+    }
+
+    /**
+     * 是否是需要检查的buildVariant
+     *
+     * @param context Context
+     * @param buildVariant buildVariant
+     * @return true 需要检查
+     */
+    fun isBuildVariant(context: Context, buildVariant: String?): Boolean {
+        return buildVariant?.let {
+            context.project.buildVariant?.name?.contains(it, true)
+        } ?: true
     }
 }
