@@ -1,4 +1,4 @@
-package com.lkl.android.lint.checks.detector
+package com.lkl.android.lint.checks.detector.base
 
 import com.android.tools.lint.detector.api.Context
 import com.android.tools.lint.detector.api.Detector

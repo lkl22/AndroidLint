@@ -1,10 +1,11 @@
-package com.lkl.android.lint.checks.detector
+package com.lkl.android.lint.checks.detector.xml
 
 import com.android.SdkConstants
 import com.android.tools.lint.detector.api.*
 import com.android.xml.AndroidManifest
 import com.google.gson.JsonObject
 import com.lkl.android.lint.checks.bean.AttrItem
+import com.lkl.android.lint.checks.detector.base.BaseConfigDetector
 import com.lkl.android.lint.checks.utils.DetectorUtils
 import com.lkl.android.lint.checks.utils.GsonUtils
 import org.w3c.dom.Element

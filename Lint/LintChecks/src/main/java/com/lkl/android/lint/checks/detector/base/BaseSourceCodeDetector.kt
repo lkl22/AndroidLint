@@ -1,11 +1,8 @@
-package com.lkl.android.lint.checks.detector
+package com.lkl.android.lint.checks.detector.base
 
 import com.android.tools.lint.detector.api.*
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
 import com.intellij.psi.PsiMethod
 import com.lkl.android.lint.checks.bean.FixItem
-import com.lkl.android.lint.checks.config.LintConfig
 import com.lkl.android.lint.checks.utils.DetectorUtils
 import com.lkl.android.lint.checks.utils.GsonUtils
 import org.jetbrains.kotlin.psi.KtFile

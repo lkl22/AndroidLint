@@ -1,8 +1,9 @@
-package com.lkl.android.lint.checks.detector
+package com.lkl.android.lint.checks.detector.source
 
 import com.android.tools.lint.detector.api.*
 import com.google.gson.JsonObject
 import com.intellij.psi.PsiMethod
+import com.lkl.android.lint.checks.detector.base.BaseSourceCodeDetector
 import org.jetbrains.uast.UCallExpression
 
 

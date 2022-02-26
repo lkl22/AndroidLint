@@ -17,7 +17,10 @@ package com.lkl.android.lint.checks
 
 import com.android.tools.lint.client.api.IssueRegistry
 import com.android.tools.lint.detector.api.CURRENT_API
-import com.lkl.android.lint.checks.detector.*
+import com.lkl.android.lint.checks.detector.source.*
+import com.lkl.android.lint.checks.detector.xml.ApplicationAttrDetector
+import com.lkl.android.lint.checks.detector.xml.ExportedAttrDetector
+import com.lkl.android.lint.checks.detector.xml.UsesPermissionDetector
 
 /*
  * The list of issues that will be checked when running <code>lint</code>.

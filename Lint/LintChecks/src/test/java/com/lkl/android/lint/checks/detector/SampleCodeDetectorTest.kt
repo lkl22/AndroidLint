@@ -17,7 +17,7 @@ package com.lkl.android.lint.checks.detector
 
 import com.android.tools.lint.checks.infrastructure.TestFiles.java
 import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
-import com.lkl.android.lint.checks.detector.SampleCodeDetector
+import com.lkl.android.lint.checks.detector.source.SampleCodeDetector
 import org.junit.Test
 
 @Suppress("UnstableApiUsage")
