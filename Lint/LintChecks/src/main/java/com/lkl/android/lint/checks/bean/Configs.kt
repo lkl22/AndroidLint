@@ -11,7 +11,7 @@ open class BaseConfigProperty(
     val reportMessage: String = "",
     val exclude: List<String> = listOf(),
     val excludeRegex: String = "",
-    private val severity: String?
+    private val severity: String? = "error"
 ) {
     val lintSeverity
         get() = when (severity) {
@@ -23,6 +23,17 @@ open class BaseConfigProperty(
             else -> Severity.ERROR
         }
 }
+
+/**
+ * 资源命名规范
+ *
+ * @param drawable 图片资源
+ * @param layout layout布局资源
+ */
+data class ResourceNameRule(
+    val drawable: BaseConfigProperty = BaseConfigProperty(),
+    val layout: BaseConfigProperty = BaseConfigProperty()
+)
 
 /**
  * 自动修复参数配置

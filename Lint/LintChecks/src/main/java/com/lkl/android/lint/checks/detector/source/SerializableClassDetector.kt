@@ -7,8 +7,8 @@ import com.lkl.android.lint.checks.bean.BaseConfigProperty
 import com.lkl.android.lint.checks.detector.base.BaseSourceCodeDetector
 import com.lkl.android.lint.checks.utils.GsonUtils
 import com.lkl.android.lint.checks.utils.LintMatcher
-import org.jetbrains.uast.UClass
 import com.lkl.android.lint.checks.utils.report
+import org.jetbrains.uast.UClass
 
 /**
  * 实现了Serializable接口的类，引用类型成员变量也必须要实现Serializable接口

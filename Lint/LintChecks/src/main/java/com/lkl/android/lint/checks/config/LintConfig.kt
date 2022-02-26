@@ -15,7 +15,7 @@ import java.io.File
 class LintConfig(private val context: Context) {
     companion object {
         private const val CONFIG_DIR_NAME = "lintConfig"
-        private const val CONFIG_FILE_NAME = "custom-lint-config.json"
+        const val CONFIG_FILE_NAME = "custom-lint-config.json"
         private const val SETTINGS_GRADLE_FILE_NAME = "settings.gradle"
     }
 

@@ -20,6 +20,7 @@ import com.android.tools.lint.detector.api.CURRENT_API
 import com.lkl.android.lint.checks.detector.source.*
 import com.lkl.android.lint.checks.detector.xml.ApplicationAttrDetector
 import com.lkl.android.lint.checks.detector.xml.ExportedAttrDetector
+import com.lkl.android.lint.checks.detector.xml.ResourceNameDetector
 import com.lkl.android.lint.checks.detector.xml.UsesPermissionDetector
 
 /*
@@ -38,6 +39,7 @@ class MyIssueRegistry : IssueRegistry() {
         NumParseDetector.ISSUE,
         ApiDetector.ISSUE,
         MethodParamDetector.ISSUE,
+        ResourceNameDetector.ISSUE,
         SerializableClassDetector.ISSUE
     )
 

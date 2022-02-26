@@ -1,6 +1,7 @@
 package com.lkl.android.lint.checks.utils
 
 import com.android.tools.lint.detector.api.*
+import com.lkl.android.lint.checks.bean.BaseConfigProperty
 import org.jetbrains.uast.UCallExpression
 import org.jetbrains.uast.UElement
 import org.w3c.dom.Node
@@ -40,6 +41,16 @@ fun XmlContext.report(
     quickfixData: LintFix?
 ) {
     this.report(getNewIssue(issue, message, severity), scope, location, message, quickfixData)
+}
+
+fun Context.report(
+    issue: Issue, location: Location, baseProperty: BaseConfigProperty
+) {
+    this.report(
+        getNewIssue(issue, baseProperty.reportMessage, baseProperty.lintSeverity),
+        location,
+        baseProperty.reportMessage
+    )
 }
 
 fun getNewIssue(issue: Issue, message: String, severity: Severity): Issue {

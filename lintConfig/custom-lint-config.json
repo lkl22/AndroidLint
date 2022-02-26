@@ -258,5 +258,17 @@
         "namespace": "http://schemas.android.com/apk/res/android"
       }
     ]
+  },
+  "resource_name": {
+    "drawable": {
+      "nameRegex": "^(ic|bg|shape)_",
+      "reportMessage": "drawable命名不符合 (bg|shape)_ 规则",
+      "severity": "warning"
+    },
+    "layout": {
+      "nameRegex": "^(activity|fragment|dialog|item|view|page)_",
+      "reportMessage": "layout命名不符合 (activity|dialog|item|view|page)_ 规则",
+      "severity": "error"
+    }
   }
 }
