@@ -27,19 +27,19 @@ import com.lkl.android.lint.checks.detector.xml.UsesPermissionDetector
  */
 @Suppress("UnstableApiUsage")
 class MyIssueRegistry : IssueRegistry() {
-    override val issues =
-        listOf(
-            LogDetector.ISSUE,
-            StartActivityDetector.ISSUE,
-            IntentDetector.ISSUE,
-            BundleDetector.ISSUE,
-            ExportedAttrDetector.ISSUE,
-            ApplicationAttrDetector.ISSUE,
-            UsesPermissionDetector.ISSUE,
-            NumParseDetector.ISSUE,
-            ApiDetector.ISSUE,
-            MethodParamDetector.ISSUE
-        )
+    override val issues = listOf(
+        LogDetector.ISSUE,
+        StartActivityDetector.ISSUE,
+        IntentDetector.ISSUE,
+        BundleDetector.ISSUE,
+        ExportedAttrDetector.ISSUE,
+        ApplicationAttrDetector.ISSUE,
+        UsesPermissionDetector.ISSUE,
+        NumParseDetector.ISSUE,
+        ApiDetector.ISSUE,
+        MethodParamDetector.ISSUE,
+        SerializableClassDetector.ISSUE
+    )
 
     override val api: Int
         get() = CURRENT_API

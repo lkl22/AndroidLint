@@ -8,6 +8,11 @@
       }
     ]
   },
+  "serializable_usage": {
+    "nameRegex": "^(com\\.lkl\\.lint\\.demo|com\\.lkl\\.lint\\.commonlib)",
+    "reportMessage": "该对象必须要实现Serializable接口，因为外部类实现了Serializable接口",
+    "severity": "warning"
+  },
   "start-activity-usage": {
     "reportMessage": "Do not directly invoke start activity some methods.",
     "detectMethodNames": [

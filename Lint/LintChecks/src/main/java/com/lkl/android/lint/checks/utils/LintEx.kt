@@ -26,7 +26,7 @@ fun JavaContext.report(
     location: Location,
     message: String,
     severity: Severity,
-    quickfixData: LintFix? = null
+    quickfixData: LintFix?
 ) {
     this.report(getNewIssue(issue, message, severity), scope, location, message, quickfixData)
 }
@@ -37,7 +37,7 @@ fun XmlContext.report(
     location: Location,
     message: String,
     severity: Severity,
-    quickfixData: LintFix? = null
+    quickfixData: LintFix?
 ) {
     this.report(getNewIssue(issue, message, severity), scope, location, message, quickfixData)
 }

@@ -8,7 +8,7 @@ import com.android.tools.lint.detector.api.Severity
 open class BaseConfigProperty(
     val name: String = "",
     val nameRegex: String = "",
-    val message: String = "",
+    val reportMessage: String = "",
     val exclude: List<String> = listOf(),
     val excludeRegex: String = "",
     private val severity: String?
