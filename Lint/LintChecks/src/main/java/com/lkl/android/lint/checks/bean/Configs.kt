@@ -167,3 +167,18 @@ data class ConstructorItem(val constructorName: String?) : BaseConfigProperty()
  * @param constructors 需要校验的构造方法配置列表
  */
 data class ConstructorUsage(val reportMessage: String?, val constructors: List<ConstructorItem>?)
+
+/**
+ * 需要校验的继承配置
+ *
+ * @param className 继承的类名/接口名
+ */
+data class InheritItem(val className: String?) : BaseConfigProperty()
+
+/**
+ * 需要校验的继承配置项
+ *
+ * @param reportMessage 默认的report message
+ * @param inherits 需要校验的继承配置列表
+ */
+data class InheritUsage(val reportMessage: String?, val inherits: List<InheritItem>?)

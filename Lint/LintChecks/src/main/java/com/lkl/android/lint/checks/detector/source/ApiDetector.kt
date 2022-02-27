@@ -21,6 +21,8 @@ import java.util.ArrayList
 @Suppress("UnstableApiUsage")
 class ApiDetector : BaseSourceCodeDetector() {
     companion object {
+        private const val REPORT_MESSAGE = "Do not directly invoke this method."
+
         /**
          * Issue describing the problem and pointing to the detector
          * implementation.
@@ -31,10 +33,10 @@ class ApiDetector : BaseSourceCodeDetector() {
             id = "ApiUsage",
             // Title -- shown in the IDE's preference dialog, as category headers in the
             // Analysis results window, etc
-            briefDescription = "Do not directly invoke this methods.",
+            briefDescription = REPORT_MESSAGE,
             // Full explanation of the issue; you can use some markdown markup such as
             // `monospace`, *italic*, and **bold**.
-            explanation = "Do not directly invoke this methods, should use the unified tool class.", // no need to .trimIndent(), lint does that automatically
+            explanation = REPORT_MESSAGE, // no need to .trimIndent(), lint does that automatically
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,
@@ -86,8 +88,7 @@ class ApiDetector : BaseSourceCodeDetector() {
 
         fixes = apiItem.fixes
 
-        val reportMessage = apiItem.reportMessage ?: (apiUsage?.reportMessage
-            ?: "Do not directly invoke this method.")
+        val reportMessage = apiItem.reportMessage ?: (apiUsage?.reportMessage ?: REPORT_MESSAGE)
 
         context.report(
             ISSUE, node, context.getLocation(node), reportMessage, getFix(context, node, method)

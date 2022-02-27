@@ -23,6 +23,21 @@
       }
     ]
   },
+  "inherit_usage": {
+    "reportMessage": "Do not inherit this class.",
+    "inherits": [
+      {
+        "className": "com.lkl.lint.demo.inherit.SuperClass",
+        "reportMessage": "避免直接继承SuperClass",
+        "severity": "error"
+      },
+      {
+        "className": "com.lkl.lint.demo.inherit.Interface",
+        "reportMessage": "避免直接继承Interface",
+        "severity": "error"
+      }
+    ]
+  },
   "start-activity-usage": {
     "reportMessage": "Do not directly invoke start activity some methods.",
     "detectMethodNames": [
