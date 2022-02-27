@@ -20,20 +20,17 @@ import org.w3c.dom.Element
 @Suppress("UnstableApiUsage")
 class ApplicationAttrDetector : BaseConfigDetector(), XmlScanner {
     companion object {
+        private const val REPORT_MESSAGE = "some attribute better to set correct value."
+
         /**
          * Issue describing the problem and pointing to the detector
          * implementation.
          */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            // ID: used in @SuppressLint warnings etc
             id = "ApplicationAttribute",
-            // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
-            briefDescription = "some attribute better to set correct value.",
-            // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
-            explanation = "some attribute better to set correct value.", // no need to .trimIndent(), lint does that automatically
+            briefDescription = REPORT_MESSAGE,
+            explanation = REPORT_MESSAGE,
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,

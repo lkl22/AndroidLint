@@ -18,17 +18,17 @@ import org.jetbrains.uast.kotlin.KotlinStringULiteralExpression
 @Suppress("UnstableApiUsage")
 class NumParseDetector : BaseSourceCodeDetector() {
     companion object {
+        private const val REPORT_MESSAGE = "Num parse maybe throw NumberFormatException, should try catch."
+
         /**
          * Issue describing the problem and pointing to the detector
          * implementation.
          */
         @JvmField
-        val ISSUE: Issue = Issue.create( // ID: used in @SuppressLint warnings etc
-            id = "NumParseUsage", // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
-            briefDescription = "Num parse maybe throw NumberFormatException.", // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
-            explanation = "Num parse maybe throw NumberFormatException, should try catch.",
+        val ISSUE: Issue = Issue.create(
+            id = "NumParseUsage",
+            briefDescription = REPORT_MESSAGE,
+            explanation = REPORT_MESSAGE,
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,

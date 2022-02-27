@@ -16,20 +16,17 @@ import org.jetbrains.uast.UCallExpression
 @Suppress("UnstableApiUsage")
 class LogDetector : BaseSourceCodeDetector() {
     companion object {
+        private const val REPORT_MESSAGE = "Do not directly invoke android.util.Log methods."
+
         /**
          * Issue describing the problem and pointing to the detector
          * implementation.
          */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            // ID: used in @SuppressLint warnings etc
             id = "LogUsage",
-            // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
-            briefDescription = "Do not directly invoke android.util.Log methods.",
-            // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
-            explanation = "Do not directly invoke android.util.Log methods, should use the unified tool class", // no need to .trimIndent(), lint does that automatically
+            briefDescription = REPORT_MESSAGE,
+            explanation = REPORT_MESSAGE,
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,
@@ -52,8 +49,7 @@ class LogDetector : BaseSourceCodeDetector() {
                 method, com.android.tools.lint.checks.LogDetector.LOG_CLS
             )
         ) {
-            val reportMessage = getStringConfig(KEY_REPORT_MESSAGE)
-                ?: "Do not directly invoke android.util.Log methods."
+            val reportMessage = getStringConfig(KEY_REPORT_MESSAGE) ?: REPORT_MESSAGE
 
             context.report(
                 ISSUE,

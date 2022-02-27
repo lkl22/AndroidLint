@@ -21,20 +21,17 @@ import java.util.*
 @Suppress("UnstableApiUsage")
 class MethodParamDetector : BaseSourceCodeDetector() {
     companion object {
+        private const val REPORT_MESSAGE = "Please use the specified parameters."
+
         /**
          * Issue describing the problem and pointing to the detector
          * implementation.
          */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            // ID: used in @SuppressLint warnings etc
             id = "MethodParamUsage",
-            // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
-            briefDescription = "Please use the specified parameters.",
-            // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
-            explanation = "Please use the specified parameters.", // no need to .trimIndent(), lint does that automatically
+            briefDescription = REPORT_MESSAGE,
+            explanation = REPORT_MESSAGE,
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,
@@ -81,8 +78,8 @@ class MethodParamDetector : BaseSourceCodeDetector() {
         val methodParamItem = getMethodParamItem(context, method) ?: return
         val params = methodParamItem.params ?: return
 
-        val reportMessage = methodParamItem.reportMessage ?: (methodParamConfig?.reportMessage
-            ?: "Please use the specified parameters.")
+        val reportMessage =
+            methodParamItem.reportMessage ?: (methodParamConfig?.reportMessage ?: REPORT_MESSAGE)
 
         params.forEach { paramInfo ->
             if (paramInfo.index < 0 || paramInfo.index >= method.parameters.size) {

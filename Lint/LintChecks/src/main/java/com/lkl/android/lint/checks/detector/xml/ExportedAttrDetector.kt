@@ -20,26 +20,23 @@ import org.w3c.dom.Element
 @Suppress("UnstableApiUsage")
 class ExportedAttrDetector : BaseConfigDetector(), XmlScanner {
     companion object {
+        private const val REPORT_MESSAGE =
+            "Exported attribute better to set to false, set to true must have reason."
+
         /**
          * Issue describing the problem and pointing to the detector
          * implementation.
          */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            // ID: used in @SuppressLint warnings etc
             id = "ExportedAttribute",
-            // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
-            briefDescription = "Exported attribute better to set to false.",
-            // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
-            explanation = "Exported attribute better to set to false, set to true must have reason.", // no need to .trimIndent(), lint does that automatically
+            briefDescription = REPORT_MESSAGE,
+            explanation = REPORT_MESSAGE,
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,
             implementation = Implementation(
-                ExportedAttrDetector::class.java,
-                Scope.MANIFEST_SCOPE
+                ExportedAttrDetector::class.java, Scope.MANIFEST_SCOPE
             )
         )
     }
@@ -88,14 +85,8 @@ class ExportedAttrDetector : BaseConfigDetector(), XmlScanner {
             }
             val scope = attrExported ?: element
             context.report(
-                ISSUE,
-                scope,
-                context.getLocation(scope),
-                "Exported attribute better to set to false.",
-                fix().set(
-                    SdkConstants.ANDROID_URI,
-                    SdkConstants.ATTR_EXPORTED,
-                    SdkConstants.VALUE_FALSE
+                ISSUE, scope, context.getLocation(scope), REPORT_MESSAGE, fix().set(
+                    SdkConstants.ANDROID_URI, SdkConstants.ATTR_EXPORTED, SdkConstants.VALUE_FALSE
                 ).build()
             )
         }

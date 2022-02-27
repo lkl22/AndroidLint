@@ -19,17 +19,17 @@ class IntentDetector : BaseSourceCodeDetector() {
     companion object {
         const val CLS_INTENT = "android.content.Intent"
 
+        private const val REPORT_MESSAGE = "Do not directly invoke $CLS_INTENT this method."
+
         /**
          * Issue describing the problem and pointing to the detector
          * implementation.
          */
         @JvmField
-        val ISSUE: Issue = Issue.create( // ID: used in @SuppressLint warnings etc
-            id = "IntentUsage", // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
-            briefDescription = "Do not directly invoke $CLS_INTENT some methods.", // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
-            explanation = "Do not directly invoke $CLS_INTENT some methods, should use the unified tool class", // no need to .trimIndent(), lint does that automatically
+        val ISSUE: Issue = Issue.create(
+            id = "IntentUsage",
+            briefDescription = REPORT_MESSAGE,
+            explanation = REPORT_MESSAGE,
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,
@@ -57,8 +57,7 @@ class IntentDetector : BaseSourceCodeDetector() {
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
         if (context.evaluator.isMemberInClass(method, CLS_INTENT)) {
-            val reportMessage = getStringConfig(KEY_REPORT_MESSAGE)
-                ?: "Do not directly invoke $CLS_INTENT some methods."
+            val reportMessage = getStringConfig(KEY_REPORT_MESSAGE) ?: REPORT_MESSAGE
 
             context.report(
                 ISSUE, node, context.getLocation(node), reportMessage, getFix(context, node, method)

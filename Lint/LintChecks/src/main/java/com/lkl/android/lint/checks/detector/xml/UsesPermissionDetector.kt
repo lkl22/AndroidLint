@@ -19,26 +19,23 @@ import org.w3c.dom.Element
 @Suppress("UnstableApiUsage")
 class UsesPermissionDetector : BaseConfigDetector(), XmlScanner {
     companion object {
+        private const val REPORT_MESSAGE =
+            "Uses-Permission declaration must have usage scenarios. Please remove if you don't use the scene."
+
         /**
          * Issue describing the problem and pointing to the detector
          * implementation.
          */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            // ID: used in @SuppressLint warnings etc
-            id = "Min Uses-Permission declaration",
-            // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
-            briefDescription = "Uses-Permission declaration must have usage scenarios.",
-            // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
-            explanation = "Uses-Permission declaration must have usage scenarios. Please remove if you don't use the scene",
+            id = "MinUsesPermissionDeclaration",
+            briefDescription = REPORT_MESSAGE,
+            explanation = REPORT_MESSAGE,
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,
             implementation = Implementation(
-                UsesPermissionDetector::class.java,
-                Scope.MANIFEST_SCOPE
+                UsesPermissionDetector::class.java, Scope.MANIFEST_SCOPE
             )
         )
     }
@@ -49,12 +46,10 @@ class UsesPermissionDetector : BaseConfigDetector(), XmlScanner {
     override fun beforeCheckRootProject(context: Context) {
         super.beforeCheckRootProject(context)
         permissionList = GsonUtils.parseJson2List(
-            getJsonStringConfig("permissionList"),
-            String::class.java
+            getJsonStringConfig("permissionList"), String::class.java
         )
         ignoreCfg = GsonUtils.parseJson2List(
-            getJsonStringConfig(KEY_IGNORES),
-            PermissionIgnoreItem::class.java
+            getJsonStringConfig(KEY_IGNORES), PermissionIgnoreItem::class.java
         )
     }
 
@@ -81,8 +76,9 @@ class UsesPermissionDetector : BaseConfigDetector(), XmlScanner {
                     ISSUE,
                     element,
                     context.getLocation(element),
-                    "Uses-Permission declaration must have usage scenarios.",
-                    fix().replace().name("Remove uses-permission").all().with("").autoFix().build()
+                    REPORT_MESSAGE,
+                    fix().replace().name("Remove uses-permission $attrName").all().with("")
+                        .autoFix().build()
                 )
                 return@visitElement
             }

@@ -20,17 +20,18 @@ class StartActivityDetector : BaseSourceCodeDetector() {
         const val CLS_CONTEXT = "android.content.Context"
         const val CLS_FRAGMENT = "androidx.fragment.app.Fragment"
 
+        private const val REPORT_MESSAGE =
+            "Do not directly invoke start activity some methods, should use the unified tool class"
+
         /**
          * Issue describing the problem and pointing to the detector
          * implementation.
          */
         @JvmField
-        val ISSUE: Issue = Issue.create( // ID: used in @SuppressLint warnings etc
-            id = "StartActivityUsage", // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
-            briefDescription = "Do not directly invoke start activity some methods.", // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
-            explanation = "Do not directly invoke start activity some methods, should use the unified tool class", // no need to .trimIndent(), lint does that automatically
+        val ISSUE: Issue = Issue.create(
+            id = "StartActivityUsage",
+            briefDescription = REPORT_MESSAGE,
+            explanation = REPORT_MESSAGE,
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,
@@ -57,10 +58,11 @@ class StartActivityDetector : BaseSourceCodeDetector() {
     }
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
-        if (context.evaluator.isMemberInSubClassOf(method, CLS_CONTEXT, false)
-            || context.evaluator.isMemberInSubClassOf(method, CLS_FRAGMENT, false)) {
-            val reportMessage = getStringConfig(KEY_REPORT_MESSAGE)
-                ?: "Do not directly invoke start activity some methods."
+        if (context.evaluator.isMemberInSubClassOf(
+                method, CLS_CONTEXT, false
+            ) || context.evaluator.isMemberInSubClassOf(method, CLS_FRAGMENT, false)
+        ) {
+            val reportMessage = getStringConfig(KEY_REPORT_MESSAGE) ?: REPORT_MESSAGE
 
             context.report(
                 ISSUE, node, context.getLocation(node), reportMessage, getFix(context, node, method)

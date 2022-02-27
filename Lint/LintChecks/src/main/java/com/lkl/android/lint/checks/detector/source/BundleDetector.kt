@@ -17,20 +17,20 @@ import org.jetbrains.uast.UCallExpression
 class BundleDetector : BaseSourceCodeDetector() {
 
     companion object {
-        const val CLS_BUNDLE = "android.os.Bundle"
+        private const val CLS_BUNDLE = "android.os.Bundle"
         const val CLS_BASE_BUNDLE = "android.os.BaseBundle"
+
+        private const val REPORT_MESSAGE = "Do not directly invoke $CLS_BUNDLE this method."
 
         /**
          * Issue describing the problem and pointing to the detector
          * implementation.
          */
         @JvmField
-        val ISSUE: Issue = Issue.create( // ID: used in @SuppressLint warnings etc
-            id = "BundleUsage", // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
-            briefDescription = "Do not directly invoke $CLS_BUNDLE some methods.", // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
-            explanation = "Do not directly invoke $CLS_BUNDLE some methods, should use the unified tool class", // no need to .trimIndent(), lint does that automatically
+        val ISSUE: Issue = Issue.create(
+            id = "BundleUsage",
+            briefDescription = REPORT_MESSAGE,
+            explanation = REPORT_MESSAGE,
             category = Category.SECURITY,
             priority = 6,
             severity = Severity.ERROR,
@@ -58,8 +58,7 @@ class BundleDetector : BaseSourceCodeDetector() {
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
         if (context.evaluator.isMemberInSubClassOf(method, CLS_BASE_BUNDLE, false)) {
-            val reportMessage = getStringConfig(KEY_REPORT_MESSAGE)
-                ?: "Do not directly invoke $CLS_BUNDLE some methods."
+            val reportMessage = getStringConfig(KEY_REPORT_MESSAGE) ?: REPORT_MESSAGE
 
             context.report(
                 ISSUE, node, context.getLocation(node), reportMessage, getFix(context, node, method)
