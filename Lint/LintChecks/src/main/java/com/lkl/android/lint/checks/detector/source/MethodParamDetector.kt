@@ -45,20 +45,23 @@ class MethodParamDetector : BaseSourceCodeDetector() {
     }
 
     private var methodParamConfig: MethodParamConfig? = null
+    private var methodNames: List<String>? = null
 
     override fun getUsageConfig(): JsonObject? {
         return getUsageConfig("method-param-usage")
     }
 
-    override fun beforeCheckEachProject(context: Context) {
-        super.beforeCheckEachProject(context)
+    override fun beforeCheckRootProject(context: Context) {
+        super.beforeCheckRootProject(context)
 
         methodParamConfig =
             GsonUtils.parseJson2Obj(customConfig?.toString(), MethodParamConfig::class.java)
+
+        methodNames = getDetectApiNames()
     }
 
-    override fun getApplicableMethodNames(): List<String> {
-        return getDetectApiNames()
+    override fun getApplicableMethodNames(): List<String>? {
+        return methodNames
     }
 
     private fun getDetectApiNames(): List<String> {
@@ -85,9 +88,7 @@ class MethodParamDetector : BaseSourceCodeDetector() {
             if (paramInfo.index < 0 || paramInfo.index >= method.parameters.size) {
                 return@forEach
             }
-            if (node.valueArguments[paramInfo.index]
-                    ?.asSourceString() != paramInfo.value
-            ) {
+            if (node.valueArguments[paramInfo.index]?.asSourceString() != paramInfo.value) {
                 context.report(
                     ISSUE,
                     node,

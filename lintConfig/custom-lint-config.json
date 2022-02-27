@@ -13,6 +13,16 @@
     "reportMessage": "该对象必须要实现Serializable接口，因为外部类实现了Serializable接口",
     "severity": "warning"
   },
+  "disable_constructor_usage": {
+    "reportMessage": "Do not directly new this class.",
+    "constructors": [
+      {
+        "constructorName": "java.lang.Thread",
+        "reportMessage": "禁止直接使用new Thread()创建线程，建议使用xxxUtils做线程操作",
+        "severity": "error"
+      }
+    ]
+  },
   "start-activity-usage": {
     "reportMessage": "Do not directly invoke start activity some methods.",
     "detectMethodNames": [

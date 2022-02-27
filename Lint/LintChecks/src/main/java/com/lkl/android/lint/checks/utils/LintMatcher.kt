@@ -1,7 +1,7 @@
 package com.lkl.android.lint.checks.utils
 
 import com.intellij.psi.PsiClass
-import com.lkl.android.lint.checks.bean.BaseConfigProperty
+import com.lkl.android.lint.checks.bean.BaseMatchConfigProperty
 import org.jetbrains.uast.UCallExpression
 import org.jetbrains.uast.UClass
 import org.jetbrains.uast.getContainingUClass
@@ -19,15 +19,15 @@ object LintMatcher {
      * 匹配方法
      */
     fun matchMethod(
-        baseConfig: BaseConfigProperty, node: UCallExpression
+        baseMatchConfig: BaseMatchConfigProperty, node: UCallExpression
     ): Boolean {
         return match(
-            baseConfig.name,
-            baseConfig.nameRegex,
+            baseMatchConfig.name,
+            baseMatchConfig.nameRegex,
             node.getQualifiedName(),
             node.getContainingUClass()?.qualifiedName,
-            baseConfig.exclude,
-            baseConfig.excludeRegex
+            baseMatchConfig.exclude,
+            baseMatchConfig.excludeRegex
         )
     }
 
@@ -35,16 +35,16 @@ object LintMatcher {
      * 匹配构造方法
      */
     fun matchConstruction(
-        baseConfig: BaseConfigProperty, node: UCallExpression
+        baseMatchConfig: BaseMatchConfigProperty, node: UCallExpression
     ): Boolean {
         return match(
-            baseConfig.name,
-            baseConfig.nameRegex,
+            baseMatchConfig.name,
+            baseMatchConfig.nameRegex,
             //不要使用node.resolve()获取构造方法，在没定义构造方法使用默认构造的时候返回值为null
             node.classReference.getQualifiedName(),
             node.getContainingUClass()?.qualifiedName,
-            baseConfig.exclude,
-            baseConfig.excludeRegex
+            baseMatchConfig.exclude,
+            baseMatchConfig.excludeRegex
         )
     }
 
@@ -52,16 +52,16 @@ object LintMatcher {
      * 匹配继承或实现类
      */
     fun matchInheritClass(
-        baseConfig: BaseConfigProperty, node: UClass
+        baseMatchConfig: BaseMatchConfigProperty, node: UClass
     ): Boolean {
         node.supers.forEach {
             if (match(
-                    baseConfig.name,
-                    baseConfig.nameRegex,
+                    baseMatchConfig.name,
+                    baseMatchConfig.nameRegex,
                     it.qualifiedName,
                     node.qualifiedName,
-                    baseConfig.exclude,
-                    baseConfig.excludeRegex
+                    baseMatchConfig.exclude,
+                    baseMatchConfig.excludeRegex
                 )
             ) return true
         }
@@ -72,24 +72,24 @@ object LintMatcher {
      * 匹配文件名
      */
     fun matchFileName(
-        baseConfig: BaseConfigProperty, fileName: String
+        baseMatchConfig: BaseMatchConfigProperty, fileName: String
     ) = match(
-        baseConfig.name, baseConfig.nameRegex, fileName
+        baseMatchConfig.name, baseMatchConfig.nameRegex, fileName
     )
 
     /**
      *  匹配类
      */
     fun matchClass(
-        baseConfig: BaseConfigProperty, node: PsiClass
+        baseMatchConfig: BaseMatchConfigProperty, node: PsiClass
     ): Boolean {
         return match(
-            baseConfig.name,
-            baseConfig.nameRegex,
+            baseMatchConfig.name,
+            baseMatchConfig.nameRegex,
             node.qualifiedName,
             node.containingClass?.qualifiedName,
-            baseConfig.exclude,
-            baseConfig.excludeRegex
+            baseMatchConfig.exclude,
+            baseMatchConfig.excludeRegex
         )
     }
 

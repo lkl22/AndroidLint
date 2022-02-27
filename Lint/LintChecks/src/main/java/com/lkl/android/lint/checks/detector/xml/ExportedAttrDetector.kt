@@ -46,8 +46,8 @@ class ExportedAttrDetector : BaseConfigDetector(), XmlScanner {
 
     private var ignoreCfg: ExportedIgnoreCfg? = null
 
-    override fun beforeCheckEachProject(context: Context) {
-        super.beforeCheckEachProject(context)
+    override fun beforeCheckRootProject(context: Context) {
+        super.beforeCheckRootProject(context)
         ignoreCfg =
             GsonUtils.parseJson2Obj(getJsonStringConfig(KEY_IGNORES), ExportedIgnoreCfg::class.java)
     }

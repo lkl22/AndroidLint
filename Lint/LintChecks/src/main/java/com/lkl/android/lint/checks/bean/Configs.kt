@@ -4,13 +4,14 @@ import com.android.tools.lint.detector.api.Severity
 
 /**
  * lint配置基础属性
+ *
+ * @param reportMessage report message
+ * @param buildVariant 当前执行task的buildVariant，传了，只有指定的task会校验
+ * @param severity report Severity级别
  */
 open class BaseConfigProperty(
-    val name: String = "",
-    val nameRegex: String = "",
-    val reportMessage: String = "",
-    val exclude: List<String> = listOf(),
-    val excludeRegex: String = "",
+    val reportMessage: String? = null,
+    var buildVariant: String? = null,
     private val severity: String? = "error"
 ) {
     val lintSeverity
@@ -25,14 +26,24 @@ open class BaseConfigProperty(
 }
 
 /**
+ * lint Match配置基础属性
+ */
+open class BaseMatchConfigProperty(
+    val name: String = "",
+    val nameRegex: String = "",
+    val exclude: List<String> = listOf(),
+    val excludeRegex: String = ""
+) : BaseConfigProperty()
+
+/**
  * 资源命名规范
  *
  * @param drawable 图片资源
  * @param layout layout布局资源
  */
 data class ResourceNameRule(
-    val drawable: BaseConfigProperty = BaseConfigProperty(),
-    val layout: BaseConfigProperty = BaseConfigProperty()
+    val drawable: BaseMatchConfigProperty = BaseMatchConfigProperty(),
+    val layout: BaseMatchConfigProperty = BaseMatchConfigProperty()
 )
 
 /**
@@ -141,3 +152,18 @@ data class MethodParamItem(
  * @param methods 要检查的方法列表
  */
 data class MethodParamConfig(var reportMessage: String?, var methods: List<MethodParamItem>?)
+
+/**
+ * 需要校验的构造方法配置
+ *
+ * @param constructorName 构造方法名
+ */
+data class ConstructorItem(val constructorName: String?) : BaseConfigProperty()
+
+/**
+ * 需要校验的构造方法配置项
+ *
+ * @param reportMessage 默认的report message
+ * @param constructors 需要校验的构造方法配置列表
+ */
+data class ConstructorUsage(val reportMessage: String?, val constructors: List<ConstructorItem>?)

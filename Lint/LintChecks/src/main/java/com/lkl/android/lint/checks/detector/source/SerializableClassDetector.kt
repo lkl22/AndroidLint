@@ -3,7 +3,7 @@ package com.lkl.android.lint.checks.detector.source
 import com.android.tools.lint.detector.api.*
 import com.google.gson.JsonObject
 import com.intellij.psi.PsiClassType
-import com.lkl.android.lint.checks.bean.BaseConfigProperty
+import com.lkl.android.lint.checks.bean.BaseMatchConfigProperty
 import com.lkl.android.lint.checks.detector.base.BaseSourceCodeDetector
 import com.lkl.android.lint.checks.utils.GsonUtils
 import com.lkl.android.lint.checks.utils.LintMatcher
@@ -33,7 +33,7 @@ class SerializableClassDetector : BaseSourceCodeDetector() {
         )
     }
 
-    private var lintConfig: BaseConfigProperty? = null
+    private var lintMatchConfig: BaseMatchConfigProperty? = null
 
     override fun getUsageConfig(): JsonObject? {
         return getUsageConfig("serializable_usage")
@@ -42,8 +42,8 @@ class SerializableClassDetector : BaseSourceCodeDetector() {
     override fun beforeCheckRootProject(context: Context) {
         super.beforeCheckRootProject(context)
 
-        lintConfig =
-            GsonUtils.parseJson2Obj(customConfig?.toString(), BaseConfigProperty::class.java)
+        lintMatchConfig =
+            GsonUtils.parseJson2Obj(customConfig?.toString(), BaseMatchConfigProperty::class.java)
     }
 
     override fun applicableSuperClasses(): List<String>? {
@@ -51,7 +51,7 @@ class SerializableClassDetector : BaseSourceCodeDetector() {
     }
 
     override fun visitClass(context: JavaContext, declaration: UClass) {
-        val configProperty = lintConfig ?: return
+        val configProperty = lintMatchConfig ?: return
         for (field in declaration.fields) {
             // 字段是引用类型，并且可以拿到该class
             val psiClass = (field.type as? PsiClassType)?.resolve() ?: continue
@@ -67,7 +67,7 @@ class SerializableClassDetector : BaseSourceCodeDetector() {
                     ISSUE,
                     typeReference,
                     context.getLocation(typeReference),
-                    configProperty.reportMessage,
+                    configProperty.reportMessage ?: "",
                     configProperty.lintSeverity,
                     null
                 )

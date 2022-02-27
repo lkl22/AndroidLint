@@ -45,8 +45,8 @@ class ApplicationAttrDetector : BaseConfigDetector(), XmlScanner {
 
     private var attrs: List<AttrItem>? = null
 
-    override fun beforeCheckEachProject(context: Context) {
-        super.beforeCheckEachProject(context)
+    override fun beforeCheckRootProject(context: Context) {
+        super.beforeCheckRootProject(context)
         attrs = GsonUtils.parseJson2List(getJsonStringConfig("attrs"), AttrItem::class.java)
     }
 

@@ -45,19 +45,18 @@ class ApiDetector : BaseSourceCodeDetector() {
     }
 
     private var apiUsage: ApiUsage? = null
+    private var methodNames: List<String>? = null
 
     override fun getUsageConfig(): JsonObject? {
         return getUsageConfig("api-usage")
     }
 
-    override fun beforeCheckEachProject(context: Context) {
-        super.beforeCheckEachProject(context)
+    override fun beforeCheckRootProject(context: Context) {
+        super.beforeCheckRootProject(context)
 
         apiUsage = GsonUtils.parseJson2Obj(customConfig?.toString(), ApiUsage::class.java)
-    }
 
-    override fun getApplicableMethodNames(): List<String> {
-        return getDetectApiNames()
+        methodNames = getDetectApiNames()
     }
 
     private fun getDetectApiNames(): List<String> {
@@ -75,6 +74,10 @@ class ApiDetector : BaseSourceCodeDetector() {
             }
         }
         return methods
+    }
+
+    override fun getApplicableMethodNames(): List<String>? {
+        return methodNames
     }
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {

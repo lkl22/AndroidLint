@@ -39,12 +39,20 @@ class IntentDetector : BaseSourceCodeDetector() {
         )
     }
 
+    private var methodNames: List<String>? = null
+
     override fun getUsageConfig(): JsonObject? {
         return getUsageConfig("intent-usage")
     }
 
-    override fun getApplicableMethodNames(): List<String> {
-        return getDetectMethodNames()
+    override fun beforeCheckRootProject(context: Context) {
+        super.beforeCheckRootProject(context)
+
+        methodNames = getDetectMethodNames()
+    }
+
+    override fun getApplicableMethodNames(): List<String>? {
+        return methodNames
     }
 
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {

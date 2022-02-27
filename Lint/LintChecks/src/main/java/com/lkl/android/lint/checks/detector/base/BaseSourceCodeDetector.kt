@@ -19,8 +19,8 @@ abstract class BaseSourceCodeDetector : BaseConfigDetector(), SourceCodeScanner 
 
     protected var fixes: List<FixItem>? = null
 
-    override fun beforeCheckEachProject(context: Context) {
-        super.beforeCheckEachProject(context)
+    override fun beforeCheckRootProject(context: Context) {
+        super.beforeCheckRootProject(context)
 
         fixes = GsonUtils.parseJson2List(getJsonStringConfig(KEY_FIXES), FixItem::class.java)
     }

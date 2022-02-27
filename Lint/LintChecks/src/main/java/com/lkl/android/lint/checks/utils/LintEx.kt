@@ -47,9 +47,9 @@ fun Context.report(
     issue: Issue, location: Location, baseProperty: BaseConfigProperty
 ) {
     this.report(
-        getNewIssue(issue, baseProperty.reportMessage, baseProperty.lintSeverity),
+        getNewIssue(issue, baseProperty.reportMessage ?: "", baseProperty.lintSeverity),
         location,
-        baseProperty.reportMessage
+        baseProperty.reportMessage ?: ""
     )
 }
 

@@ -40,6 +40,7 @@ class MyIssueRegistry : IssueRegistry() {
         ApiDetector.ISSUE,
         MethodParamDetector.ISSUE,
         ResourceNameDetector.ISSUE,
+        DisableConstructorDetector.ISSUE,
         SerializableClassDetector.ISSUE
     )
 

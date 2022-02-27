@@ -46,8 +46,8 @@ class UsesPermissionDetector : BaseConfigDetector(), XmlScanner {
     private var permissionList: List<String>? = null
     private var ignoreCfg: List<PermissionIgnoreItem>? = null
 
-    override fun beforeCheckEachProject(context: Context) {
-        super.beforeCheckEachProject(context)
+    override fun beforeCheckRootProject(context: Context) {
+        super.beforeCheckRootProject(context)
         permissionList = GsonUtils.parseJson2List(
             getJsonStringConfig("permissionList"),
             String::class.java
