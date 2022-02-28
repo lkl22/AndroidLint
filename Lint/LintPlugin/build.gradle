@@ -1,6 +1,7 @@
 plugins {
     // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
-    id 'groovy-gradle-plugin'
+    id 'java-gradle-plugin'
+    id 'kotlin'
 }
 apply from: '../../GradleConfig/local-publish-build.gradle'
 

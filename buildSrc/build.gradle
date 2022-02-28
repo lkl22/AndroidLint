@@ -1,6 +1,21 @@
-plugins {
-    // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
-    id 'groovy-gradle-plugin'
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'kotlin'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        maven {
+            url uri("${rootProject.rootDir}/.repo")
+        }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://dl.google.com/dl/android/maven2/' }
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
+    }
 }
 
 Properties props = new Properties()
@@ -47,9 +62,8 @@ gradlePlugin {
 
 sourceSets {
     main {
-        java.srcDirs += "src/main/kotlin"
         if (isDebugLintPlugin) {
-            groovy.srcDirs += "${project.rootDir.parent}/Lint/LintPlugin/src/main/groovy"
+            kotlin.srcDirs += "${project.rootDir.parent}/Lint/LintPlugin/src/main/kotlin"
             resources.srcDirs += "${project.rootDir.parent}/Lint/LintPlugin/src/main/resources"
             println "add lintPlugin src"
         }

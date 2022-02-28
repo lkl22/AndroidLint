@@ -11,6 +11,10 @@ android {
         versionName VERSION_NAME
     }
 
+    lintConfig {
+        lintRuleFile "lintConfig/lint1.xml"
+    }
+
     lintOptions {
         checkDependencies true
         textReport true
