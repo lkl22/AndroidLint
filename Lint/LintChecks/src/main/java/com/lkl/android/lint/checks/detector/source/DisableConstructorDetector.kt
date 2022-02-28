@@ -8,7 +8,6 @@ import com.lkl.android.lint.checks.bean.ConstructorUsage
 import com.lkl.android.lint.checks.detector.base.BaseSourceCodeDetector
 import com.lkl.android.lint.checks.utils.DetectorUtils
 import com.lkl.android.lint.checks.utils.GsonUtils
-import com.lkl.android.lint.checks.utils.report
 import org.jetbrains.uast.UCallExpression
 import org.jetbrains.uast.getQualifiedName
 import java.util.*
@@ -45,6 +44,8 @@ class DisableConstructorDetector : BaseSourceCodeDetector() {
     private var constructorUsage: ConstructorUsage? = null
 
     private var constructorTypes: List<String>? = null
+
+    private var issueMap: MutableMap<String, Issue> = HashMap()
 
     override fun getUsageConfig(): JsonObject? {
         return getUsageConfig("disable_constructor_usage")
@@ -84,8 +85,14 @@ class DisableConstructorDetector : BaseSourceCodeDetector() {
         val reportMessage =
             item.reportMessage ?: (constructorUsage?.reportMessage ?: REPORT_MESSAGE)
 
+        var issue = issueMap[item.constructorName]
+        if (issue === null) {
+            issue = DetectorUtils.getNewIssue(ISSUE, reportMessage, item.lintSeverity)
+            issueMap[item.constructorName!!] = issue
+        }
+
         context.report(
-            ISSUE, node, context.getLocation(node), reportMessage, item.lintSeverity, null
+            issue, node, context.getLocation(node), reportMessage
         )
     }
 

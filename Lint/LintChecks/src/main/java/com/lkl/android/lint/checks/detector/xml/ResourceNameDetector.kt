@@ -74,10 +74,11 @@ class ResourceNameDetector : BaseConfigDetector(), XmlScanner {
             return
         }
 
+        val reportMessage = resourceName.reportMessage ?: REPORT_MESSAGE
         var issue = if (isDrawable) drawableIssue else layoutIssue
         if (issue === null) {
             issue = DetectorUtils.getNewIssue(
-                ISSUE, resourceName.reportMessage ?: REPORT_MESSAGE, resourceName.lintSeverity
+                ISSUE, reportMessage, resourceName.lintSeverity
             )
 
             if (isDrawable) {
@@ -90,7 +91,7 @@ class ResourceNameDetector : BaseConfigDetector(), XmlScanner {
         val fileName = getBaseName(context.file.name)
         if (!LintMatcher.matchFileName(resourceName, fileName)) {
             context.report(
-                issue!!, Location.create(context.file), resourceName.reportMessage ?: REPORT_MESSAGE
+                issue!!, Location.create(context.file), reportMessage
             )
         }
     }

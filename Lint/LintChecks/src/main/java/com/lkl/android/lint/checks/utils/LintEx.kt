@@ -1,10 +1,6 @@
 package com.lkl.android.lint.checks.utils
 
-import com.android.tools.lint.detector.api.*
-import com.lkl.android.lint.checks.bean.BaseConfigProperty
 import org.jetbrains.uast.UCallExpression
-import org.jetbrains.uast.UElement
-import org.w3c.dom.Node
 
 /**
  * 文件操作工具类
@@ -19,27 +15,4 @@ import org.w3c.dom.Node
  */
 fun UCallExpression.getQualifiedName(): String {
     return resolve()?.containingClass?.qualifiedName + "." + resolve()?.name
-}
-
-fun JavaContext.report(
-    issue: Issue,
-    scope: UElement?,
-    location: Location,
-    message: String,
-    severity: Severity,
-    quickfixData: LintFix?
-) {
-    this.report(getNewIssue(issue, message, severity), scope, location, message, quickfixData)
-}
-
-fun getNewIssue(issue: Issue, message: String, severity: Severity): Issue {
-    return Issue.create(
-        issue.id,
-        message,
-        issue.getExplanation(TextFormat.TEXT),
-        issue.category,
-        issue.priority,
-        severity,
-        issue.implementation
-    )
 }
