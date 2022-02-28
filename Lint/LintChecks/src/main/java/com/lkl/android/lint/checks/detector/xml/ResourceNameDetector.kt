@@ -7,9 +7,9 @@ import com.google.gson.JsonObject
 import com.lkl.android.lint.checks.bean.ResourceNameRule
 import com.lkl.android.lint.checks.config.LintConfig
 import com.lkl.android.lint.checks.detector.base.BaseConfigDetector
+import com.lkl.android.lint.checks.utils.DetectorUtils
 import com.lkl.android.lint.checks.utils.GsonUtils
 import com.lkl.android.lint.checks.utils.LintMatcher
-import com.lkl.android.lint.checks.utils.report
 
 /**
  * 检查资源文件命名
@@ -37,8 +37,10 @@ class ResourceNameDetector : BaseConfigDetector(), XmlScanner {
     }
 
     private var config: ResourceNameRule? = null
+    private var drawableIssue: Issue? = null
+    private var layoutIssue: Issue? = null
 
-    override fun getApplicableElements(): Collection<String>? {
+    override fun getApplicableElements(): Collection<String> {
         return listOf(SdkConstants.TAG_RESOURCES)
     }
 
@@ -58,9 +60,12 @@ class ResourceNameDetector : BaseConfigDetector(), XmlScanner {
         }
 
         val lintConfig = config ?: return
-
+        var isDrawable = false
         val resourceName = when (context.resourceFolderType) {
-            ResourceFolderType.DRAWABLE -> lintConfig.drawable
+            ResourceFolderType.DRAWABLE -> {
+                isDrawable = true
+                lintConfig.drawable
+            }
             ResourceFolderType.LAYOUT -> lintConfig.layout
             else -> null
         } ?: return
@@ -69,14 +74,24 @@ class ResourceNameDetector : BaseConfigDetector(), XmlScanner {
             return
         }
 
+        var issue = if (isDrawable) drawableIssue else layoutIssue
+        if (issue === null) {
+            issue = DetectorUtils.getNewIssue(
+                ISSUE, resourceName.reportMessage ?: REPORT_MESSAGE, resourceName.lintSeverity
+            )
+
+            if (isDrawable) {
+                drawableIssue = issue
+            } else {
+                layoutIssue = issue
+            }
+        }
+
         val fileName = getBaseName(context.file.name)
         if (!LintMatcher.matchFileName(resourceName, fileName)) {
             context.report(
-                ISSUE,
-                Location.create(context.file),
-                resourceName
+                issue!!, Location.create(context.file), resourceName.reportMessage ?: REPORT_MESSAGE
             )
         }
     }
-
 }

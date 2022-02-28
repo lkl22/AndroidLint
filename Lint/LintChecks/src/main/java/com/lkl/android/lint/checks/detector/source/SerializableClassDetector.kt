@@ -74,8 +74,7 @@ class SerializableClassDetector : BaseSourceCodeDetector() {
                     newIssue!!,
                     typeReference,
                     context.getLocation(typeReference),
-                    msg,
-                    null
+                    msg
                 )
             }
         }

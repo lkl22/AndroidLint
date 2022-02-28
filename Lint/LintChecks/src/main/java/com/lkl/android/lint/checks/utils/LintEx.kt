@@ -43,16 +43,6 @@ fun XmlContext.report(
     this.report(getNewIssue(issue, message, severity), scope, location, message, quickfixData)
 }
 
-fun Context.report(
-    issue: Issue, location: Location, baseProperty: BaseConfigProperty
-) {
-    this.report(
-        getNewIssue(issue, baseProperty.reportMessage ?: "", baseProperty.lintSeverity),
-        location,
-        baseProperty.reportMessage ?: ""
-    )
-}
-
 fun getNewIssue(issue: Issue, message: String, severity: Severity): Issue {
     return Issue.create(
         issue.id,
