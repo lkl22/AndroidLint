@@ -8,9 +8,9 @@ import com.lkl.android.lint.checks.bean.InheritUsage
 import com.lkl.android.lint.checks.detector.base.BaseSourceCodeDetector
 import com.lkl.android.lint.checks.utils.DetectorUtils
 import com.lkl.android.lint.checks.utils.GsonUtils
-import com.lkl.android.lint.checks.utils.report
 import org.jetbrains.uast.*
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * 检查禁用的构造函数的使用
@@ -44,6 +44,8 @@ class InheritDetector : BaseSourceCodeDetector() {
     private var superUsage: InheritUsage? = null
 
     private var superClasses: List<String>? = null
+
+    private var issueMap: MutableMap<String, Issue> = HashMap()
 
     override fun getUsageConfig(): JsonObject? {
         return getUsageConfig("inherit_usage")
@@ -89,8 +91,14 @@ class InheritDetector : BaseSourceCodeDetector() {
 
         val reportMessage = item.reportMessage ?: (superUsage?.reportMessage ?: REPORT_MESSAGE)
 
+        var issue = issueMap[item.className]
+        if (issue === null) {
+            issue = DetectorUtils.getNewIssue(ISSUE, reportMessage, item.lintSeverity)
+            issueMap[item.className!!] = issue
+        }
+
         context.report(
-            ISSUE, node, context.getLocation(node), reportMessage, item.lintSeverity, null
+            issue, node, context.getLocation(node), reportMessage
         )
     }
 

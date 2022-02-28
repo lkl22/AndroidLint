@@ -32,17 +32,6 @@ fun JavaContext.report(
     this.report(getNewIssue(issue, message, severity), scope, location, message, quickfixData)
 }
 
-fun XmlContext.report(
-    issue: Issue,
-    scope: Node?,
-    location: Location,
-    message: String,
-    severity: Severity,
-    quickfixData: LintFix?
-) {
-    this.report(getNewIssue(issue, message, severity), scope, location, message, quickfixData)
-}
-
 fun getNewIssue(issue: Issue, message: String, severity: Severity): Issue {
     return Issue.create(
         issue.id,
