@@ -5,9 +5,9 @@ import com.google.gson.JsonObject
 import com.intellij.psi.PsiClassType
 import com.lkl.android.lint.checks.bean.BaseMatchConfigProperty
 import com.lkl.android.lint.checks.detector.base.BaseSourceCodeDetector
+import com.lkl.android.lint.checks.utils.DetectorUtils
 import com.lkl.android.lint.checks.utils.GsonUtils
 import com.lkl.android.lint.checks.utils.LintMatcher
-import com.lkl.android.lint.checks.utils.report
 import org.jetbrains.uast.UClass
 
 /**
@@ -34,6 +34,7 @@ class SerializableClassDetector : BaseSourceCodeDetector() {
     }
 
     private var lintMatchConfig: BaseMatchConfigProperty? = null
+    private var newIssue: Issue? = null
 
     override fun getUsageConfig(): JsonObject? {
         return getUsageConfig("serializable_usage")
@@ -52,6 +53,12 @@ class SerializableClassDetector : BaseSourceCodeDetector() {
 
     override fun visitClass(context: JavaContext, declaration: UClass) {
         val configProperty = lintMatchConfig ?: return
+        val msg = configProperty.reportMessage ?: REPORT_MESSAGE
+        if (newIssue === null) {
+            newIssue = DetectorUtils.getNewIssue(
+                ISSUE, msg, configProperty.lintSeverity
+            )
+        }
         for (field in declaration.fields) {
             // 字段是引用类型，并且可以拿到该class
             val psiClass = (field.type as? PsiClassType)?.resolve() ?: continue
@@ -64,11 +71,10 @@ class SerializableClassDetector : BaseSourceCodeDetector() {
             val typeReference = field.typeReference ?: return
             if (!context.evaluator.implementsInterface(psiClass, CLASS_SERIALIZABLE, true)) {
                 context.report(
-                    ISSUE,
+                    newIssue!!,
                     typeReference,
                     context.getLocation(typeReference),
-                    configProperty.reportMessage ?: "",
-                    configProperty.lintSeverity,
+                    msg,
                     null
                 )
             }

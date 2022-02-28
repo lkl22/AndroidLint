@@ -1,6 +1,9 @@
 package com.lkl.android.lint.checks.utils
 
 import com.android.tools.lint.detector.api.Context
+import com.android.tools.lint.detector.api.Issue
+import com.android.tools.lint.detector.api.Severity
+import com.android.tools.lint.detector.api.TextFormat
 import org.jetbrains.uast.UExpression
 
 /**
@@ -38,5 +41,25 @@ object DetectorUtils {
         return buildVariant?.let {
             context.project.buildVariant?.name?.contains(it, true)
         } ?: true
+    }
+
+    /**
+     * 从old的issue创建一个新的
+     *
+     * @param issue 老的issue
+     * @param message
+     * @param severity
+     * @return 新的issue
+     */
+    fun getNewIssue(issue: Issue, message: String, severity: Severity): Issue {
+        return Issue.create(
+            issue.id,
+            message,
+            issue.getExplanation(TextFormat.TEXT),
+            issue.category,
+            issue.priority,
+            severity,
+            issue.implementation
+        )
     }
 }
