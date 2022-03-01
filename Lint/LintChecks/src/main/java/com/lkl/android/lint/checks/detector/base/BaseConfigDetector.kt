@@ -26,7 +26,7 @@ abstract class BaseConfigDetector : Detector() {
 
     override fun beforeCheckRootProject(context: Context) {
         // 读取配置
-        lintConfig = LintConfig(context)
+        lintConfig = LintConfig.getInstance(context)
 
         customConfig = getUsageConfig()
     }

@@ -23,11 +23,6 @@ object GsonUtils {
         }
     }
 
-    fun getJsonObject(file: File, key: String): JsonObject? {
-        val jsonObject = parseJsonObject(file) ?: return null
-        return getJsonObject(jsonObject, key)
-    }
-
     fun getJsonObject(jsonObject: JsonObject, key: String): JsonObject? {
         return try {
             jsonObject.get(key).asJsonObject

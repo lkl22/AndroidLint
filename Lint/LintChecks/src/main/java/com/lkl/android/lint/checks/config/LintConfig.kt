@@ -1,6 +1,6 @@
 package com.lkl.android.lint.checks.config
 
-import com.android.tools.lint.detector.api.*
+import com.android.tools.lint.detector.api.Context
 import com.google.gson.JsonObject
 import com.lkl.android.lint.checks.utils.FileUtils
 import com.lkl.android.lint.checks.utils.GsonUtils
@@ -12,30 +12,30 @@ import java.io.File
  * @author lkl
  * @since 2022/02/09
  */
-class LintConfig(private val context: Context) {
+class LintConfig private constructor(context: Context) {
     companion object {
         private const val CONFIG_DIR_NAME = "lintConfig"
         const val CONFIG_FILE_NAME = "custom-lint-config.json"
         private const val SETTINGS_GRADLE_FILE_NAME = "settings.gradle"
+
+        @Volatile
+        private var instance: LintConfig? = null
+        fun getInstance(context: Context) = instance ?: synchronized(this) {
+            instance ?: LintConfig(context).also { instance = it }
+        }
     }
 
-    private val projectDir: File
-        get() = context.project.dir
+    private val configJsonObject: JsonObject?
 
-    fun findConfig(dir: File = projectDir, key: String): JsonObject? {
-        val configFile = findConfigFile(dir)
-        if (configFile != null) {
-            val jsonObject = GsonUtils.getJsonObject(configFile, key)
-            if (jsonObject != null) {
-                return jsonObject
-            }
+    init {
+        configJsonObject = findConfigFile(context.project.dir)?.let {
+            GsonUtils.parseJsonObject(it)
         }
-        return if (isRootDir(dir)) {
-            // 直到项目根目录都没找到返回null
-            null
-        } else {
-            // 当前目录没有找到配置文件，从父目录重新查找
-            findConfig(dir.parentFile, key)
+    }
+
+    fun findConfig(key: String): JsonObject? {
+        return configJsonObject?.let {
+            GsonUtils.getJsonObject(it, key)
         }
     }
 
@@ -46,13 +46,22 @@ class LintConfig(private val context: Context) {
      * @return config file or null
      */
     private fun findConfigFile(dir: File): File? {
-        if (dir.exists() && dir.isDirectory && FileUtils.isExistDir(dir, CONFIG_DIR_NAME)) {
-            val configDir = File(dir, CONFIG_DIR_NAME)
-            if (FileUtils.isExistFile(configDir, CONFIG_FILE_NAME)) {
-                return File(configDir, CONFIG_FILE_NAME)
+        return findRootProjectPath(dir)?.let {
+            if (FileUtils.isExistDir(it, CONFIG_DIR_NAME)) {
+                val configDir = File(it, CONFIG_DIR_NAME)
+                if (FileUtils.isExistFile(configDir, CONFIG_FILE_NAME)) {
+                    return File(configDir, CONFIG_FILE_NAME)
+                }
             }
+            null
         }
-        return null
+    }
+
+    private fun findRootProjectPath(dir: File): File? {
+        if (!dir.exists() || !dir.isDirectory) {
+            return null
+        }
+        return if (isRootDir(dir)) dir else findRootProjectPath(dir.parentFile)
     }
 
     /**
